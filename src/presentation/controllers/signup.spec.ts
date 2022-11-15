@@ -121,6 +121,7 @@ describe("SignUp Controller", () => {
     // emailValid
     jest
       .spyOn(emailValidatorStub, "isValid")
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .mockImplementation((email: string): boolean => {
         throw new Error();
       });
