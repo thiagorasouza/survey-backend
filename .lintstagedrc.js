@@ -1,3 +1,3 @@
 module.exports = {
-  "*.ts": ["npx prettier --write", "npx eslint --fix", "npm t"],
+  "*.ts": ["npx prettier --write", "npx eslint --fix", "npm run test:staged"],
 };
