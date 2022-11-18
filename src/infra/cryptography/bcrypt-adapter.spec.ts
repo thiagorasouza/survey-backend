@@ -2,6 +2,8 @@ import * as bcrypt from "bcrypt";
 import { BcryptAdapter } from "./bcrypt-adapter";
 
 jest.mock("bcrypt", () => ({
+  __esModule: true,
+  ...jest.requireActual("bcrypt"),
   async hash(): Promise<string> {
     return "hashed_value";
   },
@@ -13,10 +15,6 @@ const makeSut = (): BcryptAdapter => {
 };
 
 describe("Bcrypt Adapter", () => {
-  // beforeEach(() => {
-  //   jest.clearAllMocks();
-  // });
-
   it("should call bcrypt with correct values", async () => {
     const sut = makeSut();
     const hashSpy = jest.spyOn(bcrypt, "hash");
