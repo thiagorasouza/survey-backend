@@ -1,9 +1,14 @@
-import { Encrypter } from "./db-add-account-protocols";
+import {
+  Encrypter,
+  AccountModel,
+  AddAccountRepository,
+} from "./db-add-account-protocols";
 import { DbAddAccount } from "./db-add-account";
 
 interface SutTypes {
   sut: DbAddAccount;
   encrypterStub: Encrypter;
+  addAccountRepositoryStub: AddAccountRepository;
 }
 
 const makeEncrypterStub = (): Encrypter => {
@@ -16,11 +21,27 @@ const makeEncrypterStub = (): Encrypter => {
   return new EncrypterStub();
 };
 
-const makeSut = (): SutTypes => {
-  const encrypterStub = makeEncrypterStub();
-  const sut = new DbAddAccount(encrypterStub);
+const makeAddAccountRepository = (): AddAccountRepository => {
+  class AddAccountRepositoryStub implements AddAccountRepository {
+    async add(): Promise<AccountModel> {
+      return Promise.resolve({
+        id: "valid_id",
+        name: "valid_name",
+        email: "valid_email@mail.com",
+        password: "hashed_password",
+      });
+    }
+  }
 
-  return { sut, encrypterStub };
+  return new AddAccountRepositoryStub();
+};
+
+const makeSut = (): SutTypes => {
+  const addAccountRepositoryStub = makeAddAccountRepository();
+  const encrypterStub = makeEncrypterStub();
+  const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub);
+
+  return { sut, encrypterStub, addAccountRepositoryStub };
 };
 
 describe("DbAddAccount", () => {
@@ -48,5 +69,22 @@ describe("DbAddAccount", () => {
       password: "valid_password",
     };
     expect(sut.add(accountData)).rejects.toThrow();
+  });
+
+  it("should call AddAccountRepository with correct values", async () => {
+    const { sut, addAccountRepositoryStub } = makeSut();
+    const addSpy = jest.spyOn(addAccountRepositoryStub, "add");
+    const accountData = {
+      name: "valid_name",
+      email: "valid_email@mail.com",
+      password: "valid_password",
+    };
+    await sut.add(accountData);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: "valid_name",
+      email: "valid_email@mail.com",
+      password: "hashed_password",
+    });
   });
 });
