@@ -1,4 +1,5 @@
 import { Collection, MongoClient } from "mongodb";
+import { AccountModel } from "../../../../../domain/models/account";
 
 export const MongoHelper = {
   client: null as MongoClient,
@@ -14,5 +15,15 @@ export const MongoHelper = {
 
   getCollection(name: string): Collection {
     return this.client.db().collection(name);
+  },
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  map: (collection: any): any => {
+    return {
+      id: collection._id.toString(),
+      name: collection.name,
+      email: collection.email,
+      password: collection.password,
+    };
   },
 };
