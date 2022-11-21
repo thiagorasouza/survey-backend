@@ -12,7 +12,7 @@ interface SutTypes {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(emaiL: string, password: string): Promise<string> {
+    async auth(): Promise<string> {
       return "any_token";
     }
   }
