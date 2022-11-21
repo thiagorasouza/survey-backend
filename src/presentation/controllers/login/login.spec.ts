@@ -58,10 +58,10 @@ describe("Login Controller", () => {
     await sut.handle(httpRequest);
 
     expect(authSpy).toHaveBeenCalledTimes(1);
-    expect(authSpy).toHaveBeenCalledWith(
-      httpRequest.body.email,
-      httpRequest.body.password
-    );
+    expect(authSpy).toHaveBeenCalledWith({
+      email: httpRequest.body.email,
+      password: httpRequest.body.password,
+    });
   });
 
   it("should return 401 if invalid credentials are provided", async () => {
