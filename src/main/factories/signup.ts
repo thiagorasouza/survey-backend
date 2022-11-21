@@ -3,9 +3,11 @@ import { BcryptAdapter } from "../../infra/cryptography/bcrypt-adapter";
 import { AccountMongoRepository } from "../../infra/db/mongodb/account-repository/account";
 import { LogMongoRespository } from "../../infra/db/mongodb/log-repository/log";
 import { SignUpController } from "../../presentation/controllers/signup/signup";
+import { ValidationComposite } from "../../presentation/helpers/validators/validation-composite";
 import { Controller } from "../../presentation/protocols";
 import { EmailValidatorAdapter } from "../../utils/email-validator-adapter";
 import { LogControllerDecorator } from "../decorator/log";
+import { makeSignUpValidation } from "./signup-validation";
 
 export const makeSignUpController = (): Controller => {
   const salt = 12;
@@ -15,7 +17,8 @@ export const makeSignUpController = (): Controller => {
   const emailValidatorAdapter = new EmailValidatorAdapter();
   const signUpController = new SignUpController(
     emailValidatorAdapter,
-    dbAddAccount
+    dbAddAccount,
+    makeSignUpValidation()
   );
   const logMongoRepository = new LogMongoRespository();
   return new LogControllerDecorator(signUpController, logMongoRepository);
