@@ -14,10 +14,12 @@ services:
     build: .
     image: survey-backend
     restart: always
-    command: npm start
+    command: npm run debug
     volumes:
       - ./dist:/app/dist
+      - ./package.json:/app/package.json
     ports:
       - "5000:5000"
+      - "9222:9222"
     links:
       - mongo
