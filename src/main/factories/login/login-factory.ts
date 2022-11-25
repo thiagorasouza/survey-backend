@@ -33,15 +33,4 @@ export const makeLoginController = (): Controller => {
   const loginController = new LoginController(authentication, loginValidation);
   const logErrorRepository = new LogMongoRespository();
   return new LogControllerDecorator(loginController, logErrorRepository);
-
-  // const salt = 12;
-  // const hasher = new BcryptAdapter(salt);
-  // const addAccountRepository = new AccountMongoRepository();
-  // const dbAddAccount = new DbAddAccount(hasher, addAccountRepository);
-  // const signUpController = new SignUpController(
-  //   dbAddAccount,
-  //   makeSignUpValidation()
-  // );
-  // const logMongoRepository = new LogMongoRespository();
-  // return new LogControllerDecorator(signUpController, logMongoRepository);
 };
