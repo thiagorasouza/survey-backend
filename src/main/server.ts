@@ -3,5 +3,5 @@ import app from "./config/app";
 import env from "./config/env";
 
 MongoHelper.connect(env.mongoUrl).then(() => {
-  app.listen(env.port, () => console.log("Sever running"));
+  app.listen(env.port, () => console.log(`Sever running on ${env.port}`));
 });
