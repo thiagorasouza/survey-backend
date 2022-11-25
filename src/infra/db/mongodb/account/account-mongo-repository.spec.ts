@@ -1,4 +1,4 @@
-import { AccountMongoRepository } from "./account";
+import { AccountMongoRepository } from "./account-mongo-repository";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { Collection } from "mongodb";
 
@@ -55,5 +55,21 @@ describe("Account Mongo Repository", () => {
     const sut = makeSut();
     const account = await sut.loadByEmail("any_email@email.com");
     expect(account).toBeFalsy();
+  });
+
+  it("should update the account accessToken on updateAccessToken success", async () => {
+    const sut = makeSut();
+
+    const result = await accounts.insertOne({
+      name: "any_name",
+      email: "any_email@email.com",
+      password: "any_password",
+    });
+    const { insertedId } = result;
+
+    await sut.updateAccessToken(insertedId.toString(), "any_token");
+    const account = await accounts.findOne({ _id: insertedId });
+
+    expect(account).toBeTruthy();
   });
 });
