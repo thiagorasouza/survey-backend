@@ -50,5 +50,15 @@ describe("Login Routes", () => {
         })
         .expect(200);
     });
+
+    it("should return 401 on login if credentials are invalid", async () => {
+      await request(app)
+        .post("/api/login")
+        .send({
+          email: "inexistent_email@email.com",
+          password: "inexistent_password",
+        })
+        .expect(401);
+    });
   });
 });
