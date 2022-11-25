@@ -1,9 +1,11 @@
-import { AuthenticationModel } from "../../../domain/usecases/authentication";
-import { HashComparer } from "../../protocols/criptography/hash-comparer";
-import { TokenGenerator } from "../../protocols/criptography/token-generator";
-import { LoadAccountByEmailRepository } from "../../protocols/db/load-account-by-email-repository";
-import { UpdateAccessTokenRepository } from "../../protocols/db/update-access-token-repository";
-import { AccountModel } from "../add-account/db-add-account-protocols";
+import {
+  AccountModel,
+  AuthenticationModel,
+  HashComparer,
+  TokenGenerator,
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository,
+} from "./db-authentication-protocols";
 import { DbAuthentication } from "./db-authentication";
 
 const makeFakeAccount = (): AccountModel => ({
@@ -31,7 +33,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 
 const makeHashComparer = (): HashComparer => {
   class HashComparerStub implements HashComparer {
-    async compare(value: string, hash: string): Promise<boolean> {
+    async compare(): Promise<boolean> {
       return true;
     }
   }
@@ -40,7 +42,7 @@ const makeHashComparer = (): HashComparer => {
 
 const makeTokenGenerator = (): TokenGenerator => {
   class TokenGeneratorStub implements TokenGenerator {
-    async generate(id: string): Promise<string> {
+    async generate(): Promise<string> {
       return "any_token";
     }
   }
@@ -49,7 +51,7 @@ const makeTokenGenerator = (): TokenGenerator => {
 
 const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async update(id: string, token: string): Promise<void> {
+    async update(): Promise<void> {
       return;
     }
   }
