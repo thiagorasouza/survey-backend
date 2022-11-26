@@ -30,7 +30,7 @@ const makeAuthentication = (): Authentication => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate(): Error {
+    validate(): null | Error {
       return null;
     }
   }

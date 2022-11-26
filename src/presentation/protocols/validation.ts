@@ -1,3 +1,3 @@
 export interface Validation {
-  validate(input: unknown): Error;
+  validate(input: unknown): null | Error;
 }

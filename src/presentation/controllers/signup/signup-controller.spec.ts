@@ -1,4 +1,4 @@
-import { MissingParamError, ServerError } from "../../errors";
+import { MissingParamError } from "../../errors";
 import {
   AccountModel,
   AddAccount,
@@ -23,7 +23,7 @@ const makeAddAccount = (): AddAccount => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate(): Error {
+    validate(): null | Error {
       return null;
     }
   }
@@ -77,14 +77,13 @@ describe("SignUp Controller", () => {
 
   test("Should return 500 if EmailValidator throws", async () => {
     const { sut, addAccountStub } = makeSut();
-    // emailValid
+    const fakeError = new Error();
     jest
       .spyOn(addAccountStub, "add")
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .mockImplementation(() => Promise.reject(new Error()));
+      .mockImplementation(() => Promise.reject(fakeError));
     const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(serverError(new ServerError(null)));
+    expect(httpResponse).toEqual(serverError(fakeError));
   });
 
   test("Should return 200 if valid data is provided", async () => {
