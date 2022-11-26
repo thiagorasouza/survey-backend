@@ -30,7 +30,7 @@ export class SignUpController implements Controller {
         password,
       });
 
-      this.authentication.auth({ email, password });
+      await this.authentication.auth({ email, password });
 
       return ok(account);
     } catch (error) {
