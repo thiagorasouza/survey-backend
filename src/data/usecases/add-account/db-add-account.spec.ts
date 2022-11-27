@@ -39,7 +39,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
     implements LoadAccountByEmailRepository
   {
     async loadByEmail(): Promise<AccountModel | null> {
-      return makeFakeAccount();
+      return null;
     }
   }
   return new LoadAccountByEmailRepositoryStub();
@@ -77,6 +77,22 @@ const makeFakeAccountData = (): AddAccountModel => ({
 });
 
 describe("DbAddAccount", () => {
+  it("should call LoadAccountByEmailRepository with correct email", async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, "loadByEmail");
+    await sut.add(makeFakeAccountData());
+    expect(loadSpy).toHaveBeenCalledWith("valid_email@mail.com");
+  });
+
+  it("should return null if LoadAccountByEmailRepository does not return null", async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, "loadByEmail")
+      .mockReturnValueOnce(Promise.resolve(makeFakeAccount()));
+    const result = await sut.add(makeFakeAccountData());
+    expect(result).toBe(null);
+  });
+
   it("should call Hasher with correct password", async () => {
     const { sut, hasherStub } = makeSut();
     const hasherSpy = jest.spyOn(hasherStub, "hash");
@@ -126,10 +142,10 @@ describe("DbAddAccount", () => {
     expect(account).toEqual(makeFakeAccount());
   });
 
-  it("should call LoadAccountByEmailRepository with correct email", async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, "loadByEmail");
-    await sut.add(makeFakeAccountData());
-    expect(loadSpy).toHaveBeenCalledWith("valid_email@mail.com");
-  });
+  // it("should return the new account on success", async () => {
+  //   const { sut } = makeSut();
+  //   const accountData = makeFakeAccountData();
+  //   const account = await sut.add(accountData);
+  //   expect(account).toEqual(makeFakeAccount());
+  // });
 });
