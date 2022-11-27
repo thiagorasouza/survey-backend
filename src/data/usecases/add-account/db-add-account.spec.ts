@@ -142,10 +142,10 @@ describe("DbAddAccount", () => {
     expect(account).toEqual(makeFakeAccount());
   });
 
-  // it("should return the new account on success", async () => {
-  //   const { sut } = makeSut();
-  //   const accountData = makeFakeAccountData();
-  //   const account = await sut.add(accountData);
-  //   expect(account).toEqual(makeFakeAccount());
-  // });
+  it("should return the new account on success", async () => {
+    const { sut } = makeSut();
+    const accountData = makeFakeAccountData();
+    const account = await sut.add(accountData);
+    expect(account).toEqual(makeFakeAccount());
+  });
 });
