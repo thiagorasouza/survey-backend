@@ -4,7 +4,10 @@ import { forbidden, ok, serverError } from "../helpers/http/http-helper";
 import { HttpRequest, HttpResponse, Middleware } from "../protocols";
 
 export class AuthMiddleware implements Middleware {
-  constructor(private readonly loadAccountByToken: LoadAccountByToken) {}
+  constructor(
+    private readonly loadAccountByToken: LoadAccountByToken,
+    private readonly role?: string
+  ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
@@ -14,7 +17,8 @@ export class AuthMiddleware implements Middleware {
       }
 
       const account = await this.loadAccountByToken.load(
-        httpRequest.headers["X-Access-Token"]
+        httpRequest.headers["X-Access-Token"],
+        this.role
       );
 
       if (!account) {
