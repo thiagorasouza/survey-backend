@@ -1,4 +1,5 @@
 import { LoadAccountByToken } from "../../../domain/usecases/load-account-by-token";
+import { ok } from "../../../presentation/helpers/http/http-helper";
 import { Decrypter } from "../../protocols/criptography/decrypter";
 import { LoadAccountByTokenRepository } from "../../protocols/db/account/load-account-by-token-repository";
 import { AccountModel } from "../add-account/db-add-account-protocols";
@@ -22,5 +23,7 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
     if (!account) {
       return null;
     }
+
+    return account;
   }
 }

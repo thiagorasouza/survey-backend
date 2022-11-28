@@ -1,3 +1,4 @@
+import { ok } from "../../../presentation/helpers/http/http-helper";
 import { Decrypter } from "../../protocols/criptography/decrypter";
 import { LoadAccountByTokenRepository } from "../../protocols/db/account/load-account-by-token-repository";
 import { AccountModel } from "../add-account/db-add-account-protocols";
@@ -94,5 +95,13 @@ describe("DbLoadAccountByToken Usecase", () => {
     const httpResponse = await sut.load("any_token", "any_role");
 
     expect(httpResponse).toBe(null);
+  });
+
+  it("should return an account on success", async () => {
+    const { sut } = makeSut();
+
+    const httpResponse = await sut.load("any_token", "any_role");
+
+    expect(httpResponse).toEqual(makeFakeAccount());
   });
 });
