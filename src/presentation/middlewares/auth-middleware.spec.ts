@@ -1,8 +1,10 @@
-import { AccountModel } from "../../domain/models/account";
-import { LoadAccountByToken } from "../../domain/usecases/load-account-by-token";
+import {
+  AccountModel,
+  LoadAccountByToken,
+  HttpRequest,
+} from "./auth-middleware-protocols";
 import { AccessDeniedError } from "../errors/access-denied-error";
 import { forbidden, ok, serverError } from "../helpers/http/http-helper";
-import { HttpRequest } from "../protocols";
 import { AuthMiddleware } from "./auth-middleware";
 
 const makeLoadAccountByToken = (): LoadAccountByToken => {
