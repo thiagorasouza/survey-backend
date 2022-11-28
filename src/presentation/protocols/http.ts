@@ -5,4 +5,5 @@ export interface HttpResponse {
 
 export interface HttpRequest {
   body?;
+  headers?: any;
 }
