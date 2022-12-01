@@ -9,6 +9,7 @@ import {
   AddSurvey,
   Validation,
 } from "./add-survey-controller-protocols";
+import MockDate from "mockdate";
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
@@ -53,10 +54,19 @@ const makeFakeRequest = (): HttpRequest => ({
         answer: "any_answer",
       },
     ],
+    date: new Date(),
   },
 });
 
 describe("Add Survey Controller", () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   it("should call Validation with correct values", async () => {
     const { sut, validationStub } = makeSut();
     const validateSpy = jest.spyOn(validationStub, "validate");
