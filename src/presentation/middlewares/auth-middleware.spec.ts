@@ -37,12 +37,12 @@ const makeFakeAccount = (): AccountModel => ({
 
 const makeFakeRequest = (): HttpRequest => ({
   headers: {
-    "X-Access-Token": "any_token",
+    "x-access-token": "any_token",
   },
 });
 
 describe("Auth Middleware", () => {
-  it("should return 403 if no X-Access-Token exists in headers", async () => {
+  it("should return 403 if no x-access-token exists in headers", async () => {
     const { sut } = makeSut();
     const httpResponse = await sut.handle({});
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
