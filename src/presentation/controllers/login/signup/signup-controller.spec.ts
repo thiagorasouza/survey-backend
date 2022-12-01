@@ -144,7 +144,7 @@ describe("SignUp Controller", () => {
     });
   });
 
-  it("should return 500 if Authenticaiton throws", async () => {
+  it("should return 500 if Authentication throws", async () => {
     const { sut, authenticationStub } = makeSut();
     jest.spyOn(authenticationStub, "auth").mockImplementationOnce(async () => {
       throw new Error();

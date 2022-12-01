@@ -78,7 +78,7 @@ describe("Account Mongo Repository", () => {
     });
   });
 
-  describe("UpdateAccessTokenRepository", () => {
+  describe("LoadAccountByTokenRepository", () => {
     it("should return the account on loadByToken without role", async () => {
       const sut = makeSut();
 
