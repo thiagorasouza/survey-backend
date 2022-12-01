@@ -56,5 +56,12 @@ describe("Survey Mongo Repository", () => {
       const response = await sut.loadAll();
       expect(response.length).toBe(2);
     });
+
+    it("should return an empty array if there are no surveys", async () => {
+      const sut = makeSut();
+
+      const response = await sut.loadAll();
+      expect(response.length).toBe(0);
+    });
   });
 });
