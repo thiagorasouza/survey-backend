@@ -62,7 +62,7 @@ describe("Survey Routes", () => {
         }
       );
 
-      const result = await request(app)
+      await request(app)
         .post("/api/surveys")
         .set("X-Access-Token", accessToken)
         .send({
@@ -76,13 +76,51 @@ describe("Survey Routes", () => {
           ],
         })
         .expect(204);
-      console.log("🚀 ~ result", result.body);
     });
   });
 
   describe("GET /surveys", () => {
     it("should return 403 on load surveys without access token", async () => {
       await request(app).get("/api/surveys").send().expect(403);
+    });
+
+    it("should return 200 on load surveys with valid token", async () => {
+      const response = await accounts.insertOne({
+        name: "valid_name",
+        email: "valid_email@email.com",
+        password: "valid_password",
+      });
+      const { insertedId } = response;
+      const id = insertedId.toString();
+
+      const accessToken = sign(id, env.jwtSecret);
+
+      await accounts.updateOne(
+        { _id: insertedId },
+        {
+          $set: {
+            accessToken,
+          },
+        }
+      );
+
+      await surveys.insertOne({
+        question: "Any Question",
+        answers: [
+          {
+            image: "http://image-name.com",
+            answer: "Answer 1",
+          },
+          { answer: "Answer 2" },
+        ],
+        date: new Date(),
+      });
+
+      await request(app)
+        .get("/api/surveys")
+        .set("X-Access-Token", accessToken)
+        .send()
+        .expect(200);
     });
   });
 });
