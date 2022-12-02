@@ -9,6 +9,30 @@ describe("Survey Routes", () => {
   let surveys: Collection;
   let accounts: Collection;
 
+  const makeAccessToken = async (): Promise<string> => {
+    const response = await accounts.insertOne({
+      name: "valid_name",
+      email: "valid_email@email.com",
+      password: "valid_password",
+      role: "admin",
+    });
+    const { insertedId } = response;
+    const id = insertedId.toString();
+
+    const accessToken = sign(id, env.jwtSecret);
+
+    await accounts.updateOne(
+      { _id: insertedId },
+      {
+        $set: {
+          accessToken,
+        },
+      }
+    );
+
+    return accessToken;
+  };
+
   beforeEach(async () => {
     surveys = await MongoHelper.getCollection("surveys");
     await surveys.deleteMany({});
@@ -42,25 +66,7 @@ describe("Survey Routes", () => {
     });
 
     it("should return 204 on add survey with valid token", async () => {
-      const response = await accounts.insertOne({
-        name: "valid_name",
-        email: "valid_email@email.com",
-        password: "valid_password",
-        role: "admin",
-      });
-      const { insertedId } = response;
-      const id = insertedId.toString();
-
-      const accessToken = sign(id, env.jwtSecret);
-
-      await accounts.updateOne(
-        { _id: insertedId },
-        {
-          $set: {
-            accessToken,
-          },
-        }
-      );
+      const accessToken = await makeAccessToken();
 
       await request(app)
         .post("/api/surveys")
@@ -85,42 +91,13 @@ describe("Survey Routes", () => {
     });
 
     it("should return 200 on load surveys with valid token", async () => {
-      const response = await accounts.insertOne({
-        name: "valid_name",
-        email: "valid_email@email.com",
-        password: "valid_password",
-      });
-      const { insertedId } = response;
-      const id = insertedId.toString();
-
-      const accessToken = sign(id, env.jwtSecret);
-
-      await accounts.updateOne(
-        { _id: insertedId },
-        {
-          $set: {
-            accessToken,
-          },
-        }
-      );
-
-      await surveys.insertOne({
-        question: "Any Question",
-        answers: [
-          {
-            image: "http://image-name.com",
-            answer: "Answer 1",
-          },
-          { answer: "Answer 2" },
-        ],
-        date: new Date(),
-      });
+      const accessToken = await makeAccessToken();
 
       await request(app)
         .get("/api/surveys")
         .set("X-Access-Token", accessToken)
         .send()
-        .expect(200);
+        .expect(204);
     });
   });
 });
