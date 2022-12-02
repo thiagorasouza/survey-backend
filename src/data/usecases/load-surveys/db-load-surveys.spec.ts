@@ -1,6 +1,7 @@
 import { SurveyModel } from "../../../domain/models/survey";
 import { LoadSurveysRepository } from "../../protocols/db/survey/load-surveys-repository";
 import { DbLoadSurveys } from "./db-load-surveys";
+import MockDate from "mockdate";
 
 interface SutTypes {
   sut: DbLoadSurveys;
@@ -41,6 +42,14 @@ const makeFakeSurveys = (): SurveyModel[] => {
 };
 
 describe("DbLoadSurveys", () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   it("should call LoadSurveysRepository", async () => {
     const { sut, loadSurveysRepositoryStub } = makeSut();
 
