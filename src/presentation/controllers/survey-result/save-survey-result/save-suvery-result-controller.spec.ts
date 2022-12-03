@@ -6,7 +6,7 @@ import {
 } from "../../../../domain/usecases/survey-result/save-survey-result";
 import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-by-id";
 import { InvalidParamError } from "../../../errors";
-import { forbidden, serverError } from "../../../helpers/http/http-helper";
+import { forbidden, ok, serverError } from "../../../helpers/http/http-helper";
 import { HttpRequest } from "../../../protocols";
 import { SaveSurveyResultController } from "./save-suvery-result-controller";
 import MockDate from "mockdate";
@@ -24,7 +24,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
     async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-      return;
+      return makeFakeSurveyResultModel();
     }
   }
 
@@ -62,9 +62,17 @@ const makeFakeSurveyModel = (): SurveyModel => {
   };
 };
 
+const makeFakeSurveyResultModel = (): SurveyResultModel => ({
+  id: "any_id",
+  accountId: "any_account_id",
+  surveyId: "any_survey_id",
+  answer: "any_answer",
+  date: new Date(),
+});
+
 const makeFakeRequest = (): HttpRequest => ({
   params: {
-    surveyId: "any_id",
+    surveyId: "any_survey_id",
   },
   body: {
     answer: "any_answer",
@@ -156,5 +164,14 @@ describe("SaveSurveyResultController", () => {
     const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it("should return 200 on success", async () => {
+    const { sut } = makeSut();
+
+    const request = makeFakeRequest();
+    const httpResponse = await sut.handle(request);
+
+    expect(httpResponse).toEqual(ok(makeFakeSurveyResultModel()));
   });
 });
