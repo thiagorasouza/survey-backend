@@ -1,6 +1,6 @@
 import { Collection } from "mongodb";
-import { AddAccountModel } from "../../../../domain/usecases/add-account";
-import { AddSurveyModel } from "../../../../domain/usecases/add-survey";
+import { AddAccountModel } from "../../../../domain/usecases/account/add-account";
+import { AddSurveyModel } from "../../../../domain/usecases/survey/add-survey";
 import env from "../../../../main/config/env";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { SurveyResultMongoRepository } from "./survey-result-repository";

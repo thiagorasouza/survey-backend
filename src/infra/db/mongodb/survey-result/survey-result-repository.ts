@@ -2,7 +2,7 @@ import { SurveyResultModel } from "../../../../domain/models/survey-result";
 import {
   SaveSurveyResult,
   SaveSurveyResultModel,
-} from "../../../../domain/usecases/save-survey-result";
+} from "../../../../domain/usecases/survey-result/save-survey-result";
 import { MongoHelper } from "../helpers/mongo-helper";
 
 export class SurveyResultMongoRepository implements SaveSurveyResult {
