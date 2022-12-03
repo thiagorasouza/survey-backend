@@ -33,9 +33,4 @@ export class SurveyMongoRepository
     const mapped = MongoHelper.mapId(result);
     return mapped;
   }
-
-  private mapId(survey: any): any {
-    const { _id, ...rest } = survey;
-    return { id: _id.toString(), ...rest };
-  }
 }
