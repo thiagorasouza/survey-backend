@@ -23,13 +23,8 @@ export const MongoHelper = {
     return this.client.db().collection(name);
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  map: (collection: any): any => {
-    return {
-      id: collection._id.toString(),
-      name: collection.name,
-      email: collection.email,
-      password: collection.password,
-    };
+  mapId(obj: any): any {
+    const { _id, ...rest } = obj;
+    return { id: _id.toString(), ...rest };
   },
 };

@@ -22,7 +22,7 @@ export class SurveyMongoRepository
   async loadAll(): Promise<SurveyModel[]> {
     const surveys = await MongoHelper.getCollection("surveys");
     const result = await surveys.find().toArray();
-    const mapped = result.map(this.mapId);
+    const mapped = result.map(MongoHelper.mapId);
     return mapped;
   }
 
@@ -30,7 +30,7 @@ export class SurveyMongoRepository
     const surveys = await MongoHelper.getCollection("surveys");
     const objId = new ObjectId(id);
     const result = await surveys.findOne({ _id: objId });
-    const mapped = this.mapId(result);
+    const mapped = MongoHelper.mapId(result);
     return mapped;
   }
 

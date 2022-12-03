@@ -19,7 +19,7 @@ export class AccountMongoRepository
     const result = await accountCollection.insertOne(accountData);
     const { insertedId } = result;
     const account = await accountCollection.findOne({ _id: insertedId });
-    return MongoHelper.map(account);
+    return MongoHelper.mapId(account);
   }
 
   async loadByEmail(email: string): Promise<AccountModel> {
@@ -29,7 +29,7 @@ export class AccountMongoRepository
       return null;
     }
 
-    return MongoHelper.map(account);
+    return MongoHelper.mapId(account);
   }
 
   async updateAccessToken(id: string, token: string): Promise<void> {
@@ -64,6 +64,6 @@ export class AccountMongoRepository
       return null;
     }
 
-    return MongoHelper.map(account);
+    return MongoHelper.mapId(account);
   }
 }
