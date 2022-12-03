@@ -1,17 +1,13 @@
 import { SurveyModel } from "../../../../domain/models/survey";
 import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-by-id";
 import { InvalidParamError } from "../../../errors";
-import {
-  forbidden,
-  serverError,
-  unauthorized,
-} from "../../../helpers/http/http-helper";
+import { forbidden, serverError } from "../../../helpers/http/http-helper";
 import { HttpRequest } from "../../../protocols";
 import { SaveSurveyResultController } from "./save-suvery-result-controller";
 
 const makeLoadSurveyById = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
-    async loadById(id: string): Promise<SurveyModel> {
+    async loadById(): Promise<SurveyModel> {
       return makeFakeSurveyModel();
     }
   }
@@ -49,6 +45,9 @@ const makeFakeRequest = (): HttpRequest => ({
   params: {
     surveyId: "any_id",
   },
+  body: {
+    answer: "any_answer",
+  },
 });
 
 describe("SaveSurveyResultController", () => {
@@ -75,6 +74,17 @@ describe("SaveSurveyResultController", () => {
     const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
+  });
+
+  it("should return 403 if answer is not valid", async () => {
+    const { sut } = makeSut();
+
+    const httpRequest = makeFakeRequest();
+    httpRequest.body.answer = "invalid_answer";
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError("answer")));
   });
 
   it("should return 500 if LoadSurveyById throws", async () => {
