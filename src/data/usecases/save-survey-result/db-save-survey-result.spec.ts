@@ -6,8 +6,8 @@ import { SaveSurveyResultRepository } from "../../protocols/db/survey/save-surve
 
 const makesaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-      return;
+    async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+      return makeFakeSurveyResult();
     }
   }
 
@@ -67,5 +67,14 @@ describe("DbSaveSurveyResult Usecase", () => {
     const promise = sut.save(fakeSurveyData);
 
     expect(promise).rejects.toThrow();
+  });
+
+  it("should return the survey result on success", async () => {
+    const { sut } = makeSut();
+
+    const fakeSurveyData = makeFakeSaveSurveyResultData();
+    const surveys = await sut.save(fakeSurveyData);
+
+    expect(surveys).toEqual(makeFakeSurveyResult());
   });
 });
