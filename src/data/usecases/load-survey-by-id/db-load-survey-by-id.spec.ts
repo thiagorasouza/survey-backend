@@ -11,7 +11,7 @@ interface SutTypes {
 const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
     async loadById(): Promise<SurveyModel> {
-      return makeFakeSurveys();
+      return makeFakeSurvey();
     }
   }
 
@@ -25,7 +25,7 @@ const makeSut = (): SutTypes => {
   return { sut, loadSurveyByIdRepositoryStub };
 };
 
-const makeFakeSurveys = (): SurveyModel => {
+const makeFakeSurvey = (): SurveyModel => {
   return {
     id: "any_id",
     question: "any_question",
@@ -59,13 +59,13 @@ describe("DbLoadSurveyById", () => {
     expect(loadAllSpy).toHaveBeenCalledWith("any_id");
   });
 
-  // it("should return a list of surveys on success", async () => {
-  //   const { sut } = makeSut();
+  it("should return survey on success", async () => {
+    const { sut } = makeSut();
 
-  //   const surveys = await sut.load();
+    const survey = await sut.loadById("any_id");
 
-  //   expect(surveys).toEqual(makeFakeSurveys());
-  // });
+    expect(survey).toEqual(makeFakeSurvey());
+  });
 
   // it("should throw if LoadSurveysRepository throws", async () => {
   //   const { sut, loadSurveysRepositoryStub } = makeSut();
