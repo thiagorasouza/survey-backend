@@ -53,8 +53,18 @@ describe("Survey Mongo Repository", () => {
       const surveyData = makeFakeSurveyData();
       await surveys.insertMany([surveyData, { ...surveyData }]);
 
-      const response = await sut.loadAll();
-      expect(response.length).toBe(2);
+      const result = await sut.loadAll();
+      expect(result.length).toBe(2);
+
+      expect(result[0].id).toBeTruthy();
+      expect(result[0].answers).toEqual(surveyData.answers);
+      expect(result[0].date.toISOString()).toBe(surveyData.date.toISOString());
+      expect(result[0].question).toBe(surveyData.question);
+
+      expect(result[1].id).toBeTruthy();
+      expect(result[1].answers).toEqual(surveyData.answers);
+      expect(result[1].date.toISOString()).toBe(surveyData.date.toISOString());
+      expect(result[1].question).toBe(surveyData.question);
     });
 
     it("should return an empty array if there are no surveys", async () => {
@@ -75,7 +85,11 @@ describe("Survey Mongo Repository", () => {
       const id = insertedId.toString();
 
       const result = await sut.loadById(id);
-      expect(result).toBeTruthy();
+
+      expect(result.id).toBeTruthy();
+      expect(result.answers).toEqual(surveyData.answers);
+      expect(result.date.toISOString()).toBe(surveyData.date.toISOString());
+      expect(result.question).toBe(surveyData.question);
     });
   });
 });

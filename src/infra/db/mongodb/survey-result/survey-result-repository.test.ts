@@ -85,7 +85,9 @@ describe("Survey Mongo Repository", () => {
       expect(result.surveyId).toBe(surveyResult.surveyId);
       expect(result.accountId).toBe(surveyResult.accountId);
       expect(result.answer).toBe(surveyResult.answer);
-      expect(result.date).toEqual(new Date(surveyResult.date));
+      expect(result.date.toISOString()).toEqual(
+        surveyResult.date.toISOString()
+      );
     });
 
     it("should update a survey result if not new", async () => {
