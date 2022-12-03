@@ -64,4 +64,18 @@ describe("Survey Mongo Repository", () => {
       expect(response.length).toBe(0);
     });
   });
+
+  describe(".loadById()", () => {
+    it("should load survey by id on success", async () => {
+      const sut = makeSut();
+
+      const surveyData = makeFakeSurveyData();
+      const response = await surveys.insertOne(surveyData);
+      const { insertedId } = response;
+      const id = insertedId.toString();
+
+      const result = await sut.loadById(id);
+      expect(result).toBeTruthy();
+    });
+  });
 });
