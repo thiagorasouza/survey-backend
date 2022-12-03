@@ -1,5 +1,7 @@
 import { SurveyModel } from "../../../../domain/models/survey";
 import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-by-id";
+import { InvalidParamError } from "../../../errors";
+import { forbidden, unauthorized } from "../../../helpers/http/http-helper";
 import { HttpRequest } from "../../../protocols";
 import { SaveSurveyResultController } from "./save-suvery-result-controller";
 
@@ -56,5 +58,18 @@ describe("SaveSurveyResultController", () => {
 
     expect(loadByIdSpy).toHaveBeenCalledTimes(1);
     expect(loadByIdSpy).toHaveBeenCalledWith(request.params.surveyId);
+  });
+
+  it("should return 403 if LoadSurveyById returns null", async () => {
+    const { sut, loadSurveyByIdStub } = makeSut();
+
+    jest
+      .spyOn(loadSurveyByIdStub, "loadById")
+      .mockReturnValueOnce(Promise.resolve(null));
+
+    const request = makeFakeRequest();
+    const httpResponse = await sut.handle(request);
+
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
   });
 });
