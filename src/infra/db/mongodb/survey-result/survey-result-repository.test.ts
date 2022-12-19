@@ -102,7 +102,7 @@ describe("Survey Mongo Repository", () => {
         date: new Date(),
       };
 
-      const { insertedId } = await surveys.insertOne(surveyResult);
+      const { insertedId } = await surveyResults.insertOne(surveyResult);
 
       const surveyResultUpdated = {
         surveyId,
