@@ -2,7 +2,7 @@ import { EmailInUseError, MissingParamError } from "../../../errors";
 import {
   AccountModel,
   AddAccount,
-  AddAccountModel,
+  AddAccountParams,
   HttpRequest,
   Validation,
   Authentication,
@@ -18,7 +18,7 @@ import {
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async add(account: AddAccountModel): Promise<AccountModel> {
+    async add(account: AddAccountParams): Promise<AccountModel> {
       const fakeAccount = makeFakeAccount();
       return Promise.resolve(fakeAccount);
     }

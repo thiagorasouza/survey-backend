@@ -1,6 +1,6 @@
 import { Collection } from "mongodb";
-import { AddAccountModel } from "../../../../domain/usecases/account/add-account";
-import { AddSurveyModel } from "../../../../domain/usecases/survey/add-survey";
+import { AddAccountParams } from "../../../../domain/usecases/account/add-account";
+import { AddSurveyParams } from "../../../../domain/usecases/survey/add-survey";
 import env from "../../../../main/config/env";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { SurveyResultMongoRepository } from "./survey-result-repository";
@@ -14,7 +14,7 @@ describe("Survey Mongo Repository", () => {
   let surveyResults: Collection;
   let accounts: Collection;
 
-  const makeFakeSurveyData = (): AddSurveyModel => ({
+  const makeFakeSurveyData = (): AddSurveyParams => ({
     question: "any_question",
     answers: [
       {
@@ -26,7 +26,7 @@ describe("Survey Mongo Repository", () => {
     date: new Date(),
   });
 
-  const makeFakeAccountData = (): AddAccountModel => ({
+  const makeFakeAccountData = (): AddAccountParams => ({
     name: "any_name",
     email: "any_email",
     password: "any_password",

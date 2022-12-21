@@ -1,5 +1,5 @@
 import { Collection } from "mongodb";
-import { AddSurveyModel } from "../../../../domain/usecases/survey/add-survey";
+import { AddSurveyParams } from "../../../../domain/usecases/survey/add-survey";
 import env from "../../../../main/config/env";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { SurveyMongoRepository } from "./survey-mongo-repository";
@@ -8,7 +8,7 @@ const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
 };
 
-const makeFakeSurveyData = (): AddSurveyModel => ({
+const makeFakeSurveyData = (): AddSurveyParams => ({
   question: "any_question",
   answers: [
     {

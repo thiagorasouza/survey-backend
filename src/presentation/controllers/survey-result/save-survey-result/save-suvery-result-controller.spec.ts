@@ -2,7 +2,7 @@ import { SurveyModel } from "../../../../domain/models/survey";
 import { SurveyResultModel } from "../../../../domain/models/survey-result";
 import {
   SaveSurveyResult,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
 } from "../../../../domain/usecases/survey-result/save-survey-result";
 import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-by-id";
 import { InvalidParamError } from "../../../errors";
@@ -23,7 +23,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 
 const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return makeFakeSurveyResultModel();
     }
   }
