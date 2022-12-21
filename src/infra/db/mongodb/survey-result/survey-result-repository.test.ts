@@ -1,6 +1,8 @@
 import { Collection } from "mongodb";
-import { AddAccountParams } from "../../../../domain/usecases/account/add-account";
-import { AddSurveyParams } from "../../../../domain/usecases/survey/add-survey";
+import {
+  mockAddAccountParams,
+  mockAddSurveyParams,
+} from "../../../../domain/test";
 import env from "../../../../main/config/env";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { SurveyResultMongoRepository } from "./survey-result-repository";
@@ -14,33 +16,15 @@ describe("Survey Mongo Repository", () => {
   let surveyResults: Collection;
   let accounts: Collection;
 
-  const makeFakeSurveyData = (): AddSurveyParams => ({
-    question: "any_question",
-    answers: [
-      {
-        image: "any_image",
-        answer: "any_answer",
-      },
-      { answer: "other_answer" },
-    ],
-    date: new Date(),
-  });
-
-  const makeFakeAccountData = (): AddAccountParams => ({
-    name: "any_name",
-    email: "any_email",
-    password: "any_password",
-  });
-
   const makeSurvey = async (): Promise<string> => {
-    const surveyData = makeFakeSurveyData();
+    const surveyData = mockAddSurveyParams();
     const response = await surveys.insertOne(surveyData);
     const { insertedId } = response;
     return insertedId.toString();
   };
 
   const makeAccount = async (): Promise<string> => {
-    const surveyData = makeFakeAccountData();
+    const surveyData = mockAddAccountParams();
     const response = await accounts.insertOne(surveyData);
     const { insertedId } = response;
     return insertedId.toString();
@@ -74,7 +58,7 @@ describe("Survey Mongo Repository", () => {
       const surveyResult = {
         surveyId,
         accountId,
-        answer: makeFakeSurveyData().answers[0].answer,
+        answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
       };
 
@@ -98,7 +82,7 @@ describe("Survey Mongo Repository", () => {
       const surveyResult = {
         surveyId,
         accountId,
-        answer: makeFakeSurveyData().answers[0].answer,
+        answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
       };
 
@@ -107,7 +91,7 @@ describe("Survey Mongo Repository", () => {
       const surveyResultUpdated = {
         surveyId,
         accountId,
-        answer: makeFakeSurveyData().answers[1].answer,
+        answer: mockAddSurveyParams().answers[1].answer,
         date: new Date(),
       };
 
