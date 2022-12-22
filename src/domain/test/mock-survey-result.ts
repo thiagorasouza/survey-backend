@@ -2,6 +2,7 @@ import {
   SurveyCompiledModel,
   SurveyResultModel,
 } from "../models/survey-result";
+import { LoadSurveyResult } from "../usecases/survey-result/load-survey-result";
 import {
   SaveSurveyResult,
   SaveSurveyResultParams,
@@ -72,4 +73,14 @@ export const mockSaveSurveyResult = (): SaveSurveyResult => {
   }
 
   return new SaveSurveyResultStub();
+};
+
+export const mockLoadSurveyResult = (): LoadSurveyResult => {
+  class LoadSurveyResultStub implements LoadSurveyResult {
+    async load(): Promise<SurveyCompiledModel> {
+      return mockSurveyCompiledModel();
+    }
+  }
+
+  return new LoadSurveyResultStub();
 };

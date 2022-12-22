@@ -1,3 +1,4 @@
+import { LoadSurveyResult } from "../../../../domain/usecases/survey-result/load-survey-result";
 import { SaveSurveyResult } from "../../../../domain/usecases/survey-result/save-survey-result";
 import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-by-id";
 import { InvalidParamError } from "../../../errors";
@@ -7,7 +8,8 @@ import { Controller, HttpRequest, HttpResponse } from "../../../protocols";
 export class SaveSurveyResultController implements Controller {
   constructor(
     private readonly loadSurveyById: LoadSurveyById,
-    private readonly saveSurveyResult: SaveSurveyResult
+    private readonly saveSurveyResult: SaveSurveyResult,
+    private readonly loadSurveyResult: LoadSurveyResult
   ) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -32,6 +34,8 @@ export class SaveSurveyResultController implements Controller {
         answer,
         date: new Date(),
       });
+
+      await this.loadSurveyResult.load(surveyId);
 
       return ok(surveyResult);
     } catch (error) {
