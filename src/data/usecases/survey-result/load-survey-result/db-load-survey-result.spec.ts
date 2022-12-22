@@ -76,11 +76,11 @@ describe("DbLoadSurveyResult Usecase", () => {
     expect(promise).rejects.toThrow();
   });
 
-  // it("should return the compiled survey results on success", async () => {
-  //   const { sut } = makeSut();
+  it("should return the compiled survey results on success", async () => {
+    const { sut } = makeSut();
 
-  //   const surveys = await sut.load("any_survey_id");
+    const surveys = await sut.load("any_survey_id");
 
-  //   expect(surveys).toEqual(mockSurveyCompiledModel());
-  // });
+    expect(surveys).toEqual(mockSurveyCompiledModel());
+  });
 });
