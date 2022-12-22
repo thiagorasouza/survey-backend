@@ -5,7 +5,7 @@ import {
 } from "../../../../domain/test";
 import env from "../../../../main/config/env";
 import { MongoHelper } from "../helpers/mongo-helper";
-import { SurveyResultMongoRepository } from "./survey-result-repository";
+import { SurveyResultMongoRepository } from "./survey-result-mongo-repository";
 
 const makeSut = (): SurveyResultMongoRepository => {
   return new SurveyResultMongoRepository();
