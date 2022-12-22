@@ -7,6 +7,7 @@ import { loginPath } from "./paths/login-path";
 import { signupPath } from "./paths/signup-path";
 import { surveysPath } from "./paths/surveys-path";
 import { accountSchema } from "./schemas/account-schema";
+import { addSurveyParamsSchema } from "./schemas/add-survey-schema";
 import { apiKeyAuthSchema } from "./schemas/api-key-auth-schema";
 import { errorSchema } from "./schemas/error-schema";
 import { loginParamsSchema } from "./schemas/login-params-schema";
@@ -58,5 +59,6 @@ export default {
     survey: surveySchema,
     surveys: surveysSchema,
     surveyAnswer: surveyAnswerSchema,
+    addSurveyParams: addSurveyParamsSchema,
   },
 };
