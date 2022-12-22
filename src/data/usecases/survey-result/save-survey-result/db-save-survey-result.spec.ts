@@ -1,17 +1,16 @@
-import { SurveyResultModel } from "../../../../domain/models/survey-result";
-import { SaveSurveyResultParams } from "../../../../domain/usecases/survey-result/save-survey-result";
 import { DbSaveSurveyResult } from "./db-save-survey-result";
 import MockDate from "mockdate";
 import { SaveSurveyResultRepository } from "../../../protocols/db/survey-result/save-survey-result-repository";
 import {
   mockSaveSurveyResultParams,
-  mockSurveyResultModel,
+  mockSurveyCompiledModel,
 } from "../../../../domain/test";
 import {
   mockLoadBySurveyIdRepository,
   mockSaveSurveyResultRepository,
 } from "../../../test";
 import { LoadBySurveyIdRepository } from "../../../protocols/db/survey-result/load-by-survey-id-repository";
+import { SurveyCompiledModel } from "../../../../domain/models/survey-result";
 
 interface SutTypes {
   sut: DbSaveSurveyResult;
@@ -58,7 +57,7 @@ describe("DbSaveSurveyResult Usecase", () => {
     const fakeData = mockSaveSurveyResultParams();
     await sut.save(fakeData);
 
-    expect(loadBySurveyIdSpy).toHaveBeenCalledWith(fakeData.surveyId);
+    expect(loadBySurveyIdSpy).toHaveBeenCalledWith(fakeData.survey.id);
   });
 
   it("should throw if SaveSurveyResultRepository throws", async () => {
@@ -85,12 +84,12 @@ describe("DbSaveSurveyResult Usecase", () => {
     expect(promise).rejects.toThrow();
   });
 
-  it("should return the survey result on success", async () => {
+  it("should return the compiled survey results on success", async () => {
     const { sut } = makeSut();
 
     const fakeSurveyData = mockSaveSurveyResultParams();
     const surveys = await sut.save(fakeSurveyData);
 
-    expect(surveys).toEqual(mockSurveyResultModel());
+    expect(surveys).toEqual(mockSurveyCompiledModel());
   });
 });

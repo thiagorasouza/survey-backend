@@ -1,4 +1,4 @@
-import { SaveSurveyResultController } from "../../../../../presentation/controllers/survey-result/save-survey-result/save-suvery-result-controller";
+import { SaveSurveyResultController } from "../../../../../presentation/controllers/survey-result/save-survey-result/save-survey-result-controller";
 import { Controller } from "../../../../../presentation/protocols";
 import { makeLogControllerDecorator } from "../../../decorators/log-controller-decorator-factory";
 import { makeDbSaveSurveyResult } from "../../../usecases/survey-result/save-survey-result/db-save-survey-result-factory";

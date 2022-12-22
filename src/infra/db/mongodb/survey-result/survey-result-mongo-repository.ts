@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { LoadBySurveyIdRepository } from "../../../../data/protocols/db/survey-result/load-by-survey-id-repository";
 import { SaveSurveyResultRepository } from "../../../../data/protocols/db/survey-result/save-survey-result-repository";
 import { SurveyResultModel } from "../../../../domain/models/survey-result";
@@ -12,20 +13,34 @@ export class SurveyResultMongoRepository
       "surveyResults"
     );
     const response = await surveyResultsCollection.findOneAndUpdate(
-      { surveyId: data.surveyId, accountId: data.accountId },
+      {
+        surveyId: new ObjectId(data.survey.id),
+        accountId: new ObjectId(data.accountId),
+      },
       { $set: { answer: data.answer, date: data.date } },
       { upsert: true, returnDocument: "after" }
     );
-    const mapped = MongoHelper.mapId(response.value);
-    return mapped;
+    return this.mapIds(response.value);
   }
 
   async loadBySurveyId(surveyId: string): Promise<SurveyResultModel[]> {
     const surveyResultsCollection = await MongoHelper.getCollection(
       "surveyResults"
     );
-    const response = await surveyResultsCollection.find({ surveyId }).toArray();
-    const mapped = response.map(MongoHelper.mapId);
-    return mapped;
+    const response = await surveyResultsCollection
+      .find({ surveyId: new ObjectId(surveyId) })
+      .toArray();
+
+    return response.map(this.mapIds);
+  }
+
+  private mapIds(data: any): any {
+    const { _id, surveyId, accountId, ...rest } = data;
+    return {
+      id: _id.toString(),
+      surveyId: surveyId.toString(),
+      accountId: accountId.toString(),
+      ...rest,
+    };
   }
 }

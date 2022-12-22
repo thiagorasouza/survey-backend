@@ -1,4 +1,6 @@
-import { Collection } from "mongodb";
+import { Collection, ObjectId } from "mongodb";
+import { AccountModel } from "../../../../domain/models/account";
+import { SurveyModel } from "../../../../domain/models/survey";
 import {
   mockAddAccountParams,
   mockAddSurveyParams,
@@ -6,6 +8,7 @@ import {
 import env from "../../../../main/config/env";
 import { MongoHelper } from "../helpers/mongo-helper";
 import { SurveyResultMongoRepository } from "./survey-result-mongo-repository";
+import MockDate from "mockdate";
 
 const makeSut = (): SurveyResultMongoRepository => {
   return new SurveyResultMongoRepository();
@@ -16,18 +19,20 @@ describe("Survey Mongo Repository", () => {
   let surveyResults: Collection;
   let accounts: Collection;
 
-  const makeSurvey = async (): Promise<string> => {
+  const makeSurvey = async (): Promise<SurveyModel> => {
     const surveyData = mockAddSurveyParams();
     const response = await surveys.insertOne(surveyData);
     const { insertedId } = response;
-    return insertedId.toString();
+    const survey = await surveys.findOne({ _id: insertedId });
+    return MongoHelper.mapId(survey);
   };
 
-  const makeAccount = async (): Promise<string> => {
+  const makeAccount = async (): Promise<AccountModel> => {
     const surveyData = mockAddAccountParams();
     const response = await accounts.insertOne(surveyData);
     const { insertedId } = response;
-    return insertedId.toString();
+    const account = await accounts.findOne({ _id: insertedId });
+    return MongoHelper.mapId(account);
   };
 
   beforeEach(async () => {
@@ -42,22 +47,24 @@ describe("Survey Mongo Repository", () => {
   });
 
   beforeAll(async () => {
+    MockDate.set(new Date());
     await MongoHelper.connect(env.mongoUrl);
   });
 
   afterAll(async () => {
+    MockDate.reset();
     await MongoHelper.disconnect();
   });
 
   describe(".save()", () => {
     it("should add a survey result if new", async () => {
       const sut = makeSut();
-      const surveyId = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await makeSurvey();
+      const account = await makeAccount();
 
       const surveyResult = {
-        surveyId,
-        accountId,
+        survey,
+        accountId: account.id,
         answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
       };
@@ -66,7 +73,7 @@ describe("Survey Mongo Repository", () => {
 
       // expect(result).toBeTruthy();
       expect(result.id).toBeTruthy();
-      expect(result.surveyId).toBe(surveyResult.surveyId);
+      expect(result.surveyId).toBe(surveyResult.survey.id);
       expect(result.accountId).toBe(surveyResult.accountId);
       expect(result.answer).toBe(surveyResult.answer);
       expect(result.date.toISOString()).toEqual(
@@ -76,12 +83,12 @@ describe("Survey Mongo Repository", () => {
 
     it("should update a survey result if not new", async () => {
       const sut = makeSut();
-      const surveyId = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await makeSurvey();
+      const account = await makeAccount();
 
       const surveyResult = {
-        surveyId,
-        accountId,
+        surveyId: new ObjectId(survey.id),
+        accountId: new ObjectId(account.id),
         answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
       };
@@ -89,8 +96,8 @@ describe("Survey Mongo Repository", () => {
       const { insertedId } = await surveyResults.insertOne(surveyResult);
 
       const surveyResultUpdated = {
-        surveyId,
-        accountId,
+        survey,
+        accountId: account.id,
         answer: mockAddSurveyParams().answers[1].answer,
         date: new Date(),
       };
@@ -98,7 +105,7 @@ describe("Survey Mongo Repository", () => {
       const result = await sut.save(surveyResultUpdated);
 
       expect(result.id).toBe(insertedId.toString());
-      expect(result.surveyId).toBe(surveyResultUpdated.surveyId);
+      expect(result.surveyId).toBe(surveyResultUpdated.survey.id);
       expect(result.accountId).toBe(surveyResultUpdated.accountId);
       expect(result.answer).toBe(surveyResultUpdated.answer);
       expect(result.date).toEqual(new Date(surveyResultUpdated.date));
@@ -108,19 +115,19 @@ describe("Survey Mongo Repository", () => {
   describe(".loadSurveyById()", () => {
     it("should load surveys by survey id", async () => {
       const sut = makeSut();
-      const surveyId = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await makeSurvey();
+      const account = await makeAccount();
 
       const surveyResult1 = {
-        surveyId,
-        accountId,
+        surveyId: new ObjectId(survey.id),
+        accountId: new ObjectId(account.id),
         answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
       };
       const surveyResult2 = {
-        surveyId,
-        accountId,
-        answer: mockAddSurveyParams().answers[1].answer,
+        surveyId: new ObjectId(survey.id),
+        accountId: new ObjectId(account.id),
+        answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
       };
       const { insertedIds } = await surveyResults.insertMany([
@@ -128,16 +135,22 @@ describe("Survey Mongo Repository", () => {
         { ...surveyResult2 },
       ]);
 
-      const results = await sut.loadBySurveyId(surveyId);
+      const results = await sut.loadBySurveyId(survey.id);
 
       expect(results).toEqual([
         {
           id: insertedIds[0].toString(),
-          ...surveyResult1,
+          surveyId: survey.id,
+          accountId: account.id,
+          answer: mockAddSurveyParams().answers[0].answer,
+          date: new Date(),
         },
         {
           id: insertedIds[1].toString(),
-          ...surveyResult2,
+          surveyId: survey.id,
+          accountId: account.id,
+          answer: mockAddSurveyParams().answers[0].answer,
+          date: new Date(),
         },
       ]);
     });

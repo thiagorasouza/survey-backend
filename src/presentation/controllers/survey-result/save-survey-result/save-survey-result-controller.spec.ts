@@ -3,12 +3,13 @@ import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-b
 import { InvalidParamError } from "../../../errors";
 import { forbidden, ok, serverError } from "../../../helpers/http/http-helper";
 import { HttpRequest } from "../../../protocols";
-import { SaveSurveyResultController } from "./save-suvery-result-controller";
+import { SaveSurveyResultController } from "./save-survey-result-controller";
 import MockDate from "mockdate";
 import {
   mockLoadSurveyById,
   mockSaveSurveyResult,
-  mockSurveyResultModel,
+  mockSurveyCompiledModel,
+  mockSurveyModel,
 } from "../../../../domain/test";
 
 interface SutTypes {
@@ -94,7 +95,7 @@ describe("SaveSurveyResultController", () => {
     expect(saveSpy).toHaveBeenCalledTimes(1);
     expect(saveSpy).toHaveBeenCalledWith({
       accountId: request.accountId,
-      surveyId: request.params.surveyId,
+      survey: mockSurveyModel(),
       answer: request.body.answer,
       date: new Date(),
     });
@@ -130,6 +131,6 @@ describe("SaveSurveyResultController", () => {
     const request = mockRequest();
     const httpResponse = await sut.handle(request);
 
-    expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
+    expect(httpResponse).toEqual(ok(mockSurveyCompiledModel()));
   });
 });
