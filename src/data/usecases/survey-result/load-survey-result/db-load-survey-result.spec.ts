@@ -54,27 +54,27 @@ describe("DbLoadSurveyResult Usecase", () => {
     expect(loadBySurveyIdSpy).toHaveBeenCalledWith("any_survey_id");
   });
 
-  // it("should throw if LoadSurveyByIdRepository throws", async () => {
-  //   const { sut, loadSurveyByIdRepositoryStub } = makeSut();
-  //   jest
-  //     .spyOn(loadSurveyByIdRepositoryStub, "loadById")
-  //     .mockReturnValueOnce(Promise.reject(new Error()));
+  it("should throw if LoadSurveyByIdRepository throws", async () => {
+    const { sut, loadSurveyByIdRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadSurveyByIdRepositoryStub, "loadById")
+      .mockReturnValueOnce(Promise.reject(new Error()));
 
-  //   const promise = sut.load("any_survey_id");
+    const promise = sut.load("any_survey_id");
 
-  //   expect(promise).rejects.toThrow();
-  // });
+    expect(promise).rejects.toThrow();
+  });
 
-  // it("should throw if LoadBySurveyIdRepository throws", async () => {
-  //   const { sut, loadBySurveyIdRepositoryStub } = makeSut();
-  //   jest
-  //     .spyOn(loadBySurveyIdRepositoryStub, "loadBySurveyId")
-  //     .mockReturnValueOnce(Promise.reject(new Error()));
+  it("should throw if LoadBySurveyIdRepository throws", async () => {
+    const { sut, loadBySurveyIdRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadBySurveyIdRepositoryStub, "loadBySurveyId")
+      .mockReturnValueOnce(Promise.reject(new Error()));
 
-  //   const promise = sut.load("any_survey_id");
+    const promise = sut.load("any_survey_id");
 
-  //   expect(promise).rejects.toThrow();
-  // });
+    expect(promise).rejects.toThrow();
+  });
 
   // it("should return the compiled survey results on success", async () => {
   //   const { sut } = makeSut();
