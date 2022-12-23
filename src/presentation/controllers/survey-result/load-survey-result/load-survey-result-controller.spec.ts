@@ -1,13 +1,14 @@
 import {
   mockLoadSurveyById,
   mockLoadSurveyResult,
+  mockSurveyCompiledModel,
 } from "../../../../domain/test";
 import { LoadSurveyResult } from "../../../../domain/usecases/survey-result/load-survey-result";
 import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-by-id";
 import { HttpRequest } from "../../../protocols";
 import { LoadSurveyResultController } from "./load-survey-result-controller";
 import MockDate from "mockdate";
-import { forbidden, serverError } from "../../../helpers/http/http-helper";
+import { forbidden, ok, serverError } from "../../../helpers/http/http-helper";
 import { InvalidParamError } from "../../../errors";
 
 interface SutTypes {
@@ -108,12 +109,13 @@ describe("LoadSurveyResultController", () => {
     expect(httpResponse).toEqual(serverError(new Error()));
   });
 
-  // it("should return 200 on success", async () => {
-  //   const { sut } = makeSut();
+  it("should return 200 with compiled results on success", async () => {
+    const { sut } = makeSut();
 
-  //   const request = mockRequest();
-  //   const httpResponse = await sut.handle(request);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
+    console.log("🚀 ~ httpResponse", httpResponse);
 
-  //   expect(httpResponse).toEqual(ok(mockSurveyCompiledModel()));
-  // });
+    expect(httpResponse).toEqual(ok(mockSurveyCompiledModel()));
+  });
 });
