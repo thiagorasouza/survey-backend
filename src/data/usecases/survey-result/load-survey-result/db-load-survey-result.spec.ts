@@ -1,6 +1,6 @@
-import { LoadBySurveyIdRepository } from "../../../protocols/db/survey-result/load-by-survey-id-repository";
+import { LoadSurveyResultRepository } from "../../../protocols/db/survey-result/load-survey-result-repository";
 import {
-  mockLoadBySurveyIdRepository,
+  mockLoadSurveyRepository,
   mockLoadSurveyByIdRepository,
 } from "../../../test";
 import { DbLoadSurveyResult } from "./db-load-survey-result";
@@ -11,17 +11,21 @@ import { mockSurveyCompiledModel } from "../../../../domain/test";
 interface SutTypes {
   sut: DbLoadSurveyResult;
   loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository;
-  loadBySurveyIdRepositoryStub: LoadBySurveyIdRepository;
+  loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
 }
 
 const makeSut = (): SutTypes => {
   const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository();
-  const loadBySurveyIdRepositoryStub = mockLoadBySurveyIdRepository();
+  const loadSurveyResultRepositoryStub = mockLoadSurveyRepository();
   const sut = new DbLoadSurveyResult(
     loadSurveyByIdRepositoryStub,
-    loadBySurveyIdRepositoryStub
+    loadSurveyResultRepositoryStub
   );
-  return { sut, loadSurveyByIdRepositoryStub, loadBySurveyIdRepositoryStub };
+  return {
+    sut,
+    loadSurveyByIdRepositoryStub,
+    loadSurveyResultRepositoryStub: loadSurveyResultRepositoryStub,
+  };
 };
 
 describe("DbLoadSurveyResult Usecase", () => {
@@ -42,10 +46,10 @@ describe("DbLoadSurveyResult Usecase", () => {
     expect(loadByIdSpy).toHaveBeenCalledWith("any_survey_id");
   });
 
-  it("should call LoadBySurveyIdRepository with correct values", async () => {
-    const { sut, loadBySurveyIdRepositoryStub } = makeSut();
+  it("should call LoadSurveyResultRepository with correct values", async () => {
+    const { sut, loadSurveyResultRepositoryStub } = makeSut();
     const loadBySurveyIdSpy = jest.spyOn(
-      loadBySurveyIdRepositoryStub,
+      loadSurveyResultRepositoryStub,
       "loadBySurveyId"
     );
 
@@ -65,10 +69,10 @@ describe("DbLoadSurveyResult Usecase", () => {
     expect(promise).rejects.toThrow();
   });
 
-  it("should throw if LoadBySurveyIdRepository throws", async () => {
-    const { sut, loadBySurveyIdRepositoryStub } = makeSut();
+  it("should throw if LoadSurveyResultRepository throws", async () => {
+    const { sut, loadSurveyResultRepositoryStub } = makeSut();
     jest
-      .spyOn(loadBySurveyIdRepositoryStub, "loadBySurveyId")
+      .spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
     const promise = sut.load("any_survey_id");

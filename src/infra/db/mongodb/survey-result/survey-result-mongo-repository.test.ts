@@ -112,7 +112,7 @@ describe("Survey Mongo Repository", () => {
     });
   });
 
-  describe(".loadSurveyById()", () => {
+  describe(".loadBySurveyId()", () => {
     it("should load surveys by survey id", async () => {
       const sut = makeSut();
       const survey = await makeSurvey();
