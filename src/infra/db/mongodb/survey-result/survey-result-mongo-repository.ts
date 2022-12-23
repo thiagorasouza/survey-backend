@@ -14,7 +14,7 @@ export class SurveyResultMongoRepository
     );
     const response = await surveyResultsCollection.findOneAndUpdate(
       {
-        surveyId: new ObjectId(data.survey.id),
+        surveyId: new ObjectId(data.surveyId),
         accountId: new ObjectId(data.accountId),
       },
       { $set: { answer: data.answer, date: data.date } },

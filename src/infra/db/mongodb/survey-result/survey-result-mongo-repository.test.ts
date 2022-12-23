@@ -63,7 +63,7 @@ describe("Survey Mongo Repository", () => {
       const account = await makeAccount();
 
       const surveyResult = {
-        survey,
+        surveyId: survey.id,
         accountId: account.id,
         answer: mockAddSurveyParams().answers[0].answer,
         date: new Date(),
@@ -73,7 +73,7 @@ describe("Survey Mongo Repository", () => {
 
       // expect(result).toBeTruthy();
       expect(result.id).toBeTruthy();
-      expect(result.surveyId).toBe(surveyResult.survey.id);
+      expect(result.surveyId).toBe(surveyResult.surveyId);
       expect(result.accountId).toBe(surveyResult.accountId);
       expect(result.answer).toBe(surveyResult.answer);
       expect(result.date.toISOString()).toEqual(
@@ -96,7 +96,7 @@ describe("Survey Mongo Repository", () => {
       const { insertedId } = await surveyResults.insertOne(surveyResult);
 
       const surveyResultUpdated = {
-        survey,
+        surveyId: survey.id,
         accountId: account.id,
         answer: mockAddSurveyParams().answers[1].answer,
         date: new Date(),
@@ -105,7 +105,7 @@ describe("Survey Mongo Repository", () => {
       const result = await sut.save(surveyResultUpdated);
 
       expect(result.id).toBe(insertedId.toString());
-      expect(result.surveyId).toBe(surveyResultUpdated.survey.id);
+      expect(result.surveyId).toBe(surveyResultUpdated.surveyId);
       expect(result.accountId).toBe(surveyResultUpdated.accountId);
       expect(result.answer).toBe(surveyResultUpdated.answer);
       expect(result.date).toEqual(new Date(surveyResultUpdated.date));

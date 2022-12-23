@@ -10,7 +10,6 @@ import {
   mockLoadSurveyResult,
   mockSaveSurveyResult,
   mockSurveyCompiledModel,
-  mockSurveyModel,
 } from "../../../../domain/test";
 import { LoadSurveyResult } from "../../../../domain/usecases/survey-result/load-survey-result";
 
@@ -105,7 +104,7 @@ describe("SaveSurveyResultController", () => {
     expect(saveSpy).toHaveBeenCalledTimes(1);
     expect(saveSpy).toHaveBeenCalledWith({
       accountId: request.accountId,
-      survey: mockSurveyModel(),
+      surveyId: request.params.surveyId,
       answer: request.body.answer,
       date: new Date(),
     });

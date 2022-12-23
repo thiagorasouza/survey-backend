@@ -59,7 +59,7 @@ export const mockSurveyCompiledModel = (): SurveyCompiledModel => ({
 });
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResultParams => ({
-  survey: mockSurveyModel(),
+  surveyId: "any_survey_id",
   accountId: "any_account_id",
   answer: "any_answer",
   date: new Date(),
@@ -67,8 +67,8 @@ export const mockSaveSurveyResultParams = (): SaveSurveyResultParams => ({
 
 export const mockSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save(): Promise<SurveyCompiledModel> {
-      return mockSurveyCompiledModel();
+    async save(): Promise<SurveyResultModel> {
+      return mockSurveyResultModel();
     }
   }
 
