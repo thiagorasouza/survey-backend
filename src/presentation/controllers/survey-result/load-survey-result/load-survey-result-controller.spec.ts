@@ -7,7 +7,7 @@ import { LoadSurveyById } from "../../../../domain/usecases/survey/load-survey-b
 import { HttpRequest } from "../../../protocols";
 import { LoadSurveyResultController } from "./load-survey-result-controller";
 import MockDate from "mockdate";
-import { forbidden } from "../../../helpers/http/http-helper";
+import { forbidden, serverError } from "../../../helpers/http/http-helper";
 import { InvalidParamError } from "../../../errors";
 
 interface SutTypes {
@@ -84,17 +84,17 @@ describe("LoadSurveyResultController", () => {
     expect(loadSpy).toHaveBeenCalledWith("any_survey_id");
   });
 
-  // it("should return 500 if LoadSurveyById throws", async () => {
-  //   const { sut, loadSurveyByIdStub } = makeSut();
-  //   jest
-  //     .spyOn(loadSurveyByIdStub, "loadById")
-  //     .mockReturnValueOnce(Promise.reject(new Error()));
+  it("should return 500 if LoadSurveyById throws", async () => {
+    const { sut, loadSurveyByIdStub } = makeSut();
+    jest
+      .spyOn(loadSurveyByIdStub, "loadById")
+      .mockReturnValueOnce(Promise.reject(new Error()));
 
-  //   const request = mockRequest();
-  //   const httpResponse = await sut.handle(request);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
-  //   expect(httpResponse).toEqual(serverError(new Error()));
-  // });
+    expect(httpResponse).toEqual(serverError(new Error()));
+  });
 
   // it("should return 200 on success", async () => {
   //   const { sut } = makeSut();
