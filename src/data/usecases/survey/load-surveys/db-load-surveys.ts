@@ -12,7 +12,21 @@ export class DbLoadSurveys implements LoadSurveys {
   ) {}
 
   async load(accountId: string): Promise<SurveyModel[]> {
-    await this.loadByAccountIdRepository.loadByAccountId(accountId);
-    return await this.loadSurveysRepository.loadAll();
+    const surveyResults = await this.loadByAccountIdRepository.loadByAccountId(
+      accountId
+    );
+
+    const surveysAnswered = surveyResults.map(
+      (surveyResult) => surveyResult.surveyId
+    );
+
+    const surveys = await this.loadSurveysRepository.loadAll();
+
+    const response = surveys.map((survey) => ({
+      ...survey,
+      didAnswer: surveysAnswered.includes(survey.id),
+    }));
+
+    return response;
   }
 }

@@ -35,9 +35,6 @@ export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
     async loadAll(): Promise<SurveyModel[]> {
       return mockSurveyModelList();
     }
-    async loadByAccountId(accountId: string): Promise<SurveyResultModel[]> {
-      return mockSurveyResultModelList();
-    }
   }
 
   return new LoadSurveysRepositoryStub();

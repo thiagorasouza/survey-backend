@@ -3,6 +3,14 @@ export interface SurveyModel {
   question: string;
   answers: SurveyAnswerModel[];
   date: Date;
+  didAnswer?: boolean;
+}
+
+export interface SurveyModel {
+  id: string;
+  question: string;
+  answers: SurveyAnswerModel[];
+  date: Date;
 }
 
 export interface SurveyAnswerModel {

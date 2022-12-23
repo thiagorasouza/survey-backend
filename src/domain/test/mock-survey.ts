@@ -62,7 +62,7 @@ export const mockLoadSurveys = (): LoadSurveys => {
 export const mockSurveyModelList = (): SurveyModel[] => {
   return [
     {
-      id: "any_id",
+      id: "any_survey_id",
       question: "any_question",
       answers: [
         {
@@ -73,7 +73,7 @@ export const mockSurveyModelList = (): SurveyModel[] => {
       date: new Date(),
     },
     {
-      id: "other_id",
+      id: "other_survey_id",
       question: "other_question",
       answers: [
         {
@@ -83,5 +83,55 @@ export const mockSurveyModelList = (): SurveyModel[] => {
       ],
       date: new Date(),
     },
+    {
+      id: "another_survey_id",
+      question: "another_question",
+      answers: [
+        {
+          image: "another_image",
+          answer: "another_answer",
+        },
+      ],
+      date: new Date(),
+    },
   ];
 };
+
+export const mockSurveyModelListWithFlag = (): SurveyModel[] => [
+  {
+    id: "any_survey_id",
+    question: "any_question",
+    didAnswer: true,
+    answers: [
+      {
+        image: "any_image",
+        answer: "any_answer",
+      },
+    ],
+    date: new Date(),
+  },
+  {
+    id: "other_survey_id",
+    question: "other_question",
+    didAnswer: true,
+    answers: [
+      {
+        image: "other_image",
+        answer: "other_answer",
+      },
+    ],
+    date: new Date(),
+  },
+  {
+    id: "another_survey_id",
+    question: "another_question",
+    didAnswer: false,
+    answers: [
+      {
+        image: "another_image",
+        answer: "another_answer",
+      },
+    ],
+    date: new Date(),
+  },
+];

@@ -6,6 +6,7 @@ import {
   mockLoadSurveysRepository,
 } from "../../../test";
 import { LoadByAccountIdRepository } from "../../../protocols/db/survey-result/load-by-account-id-repository";
+import { mockSurveyModelListWithFlag } from "../../../../domain/test";
 
 interface SutTypes {
   sut: DbLoadSurveys;
@@ -81,36 +82,11 @@ describe("DbLoadSurveys", () => {
     expect(promise).rejects.toThrow();
   });
 
-  // it("should return a compiled list of surveys on success", async () => {
-  //   const { sut } = makeSut();
+  it("should return a compiled list of surveys on success", async () => {
+    const { sut } = makeSut();
 
-  //   const surveys = await sut.load("any_account_id");
+    const surveys = await sut.load("any_account_id");
 
-  //   expect(surveys).toEqual([
-  //     {
-  //       id: "any_id",
-  //       question: "any_question",
-  //       didAnswer: false,
-  //       answers: [
-  //         {
-  //           image: "any_image",
-  //           answer: "any_answer",
-  //         },
-  //       ],
-  //       date: new Date(),
-  //     },
-  //     {
-  //       id: "other_id",
-  //       question: "other_question",
-  //       didAnswer: true,
-  //       answers: [
-  //         {
-  //           image: "other_image",
-  //           answer: "other_answer",
-  //         },
-  //       ],
-  //       date: new Date(),
-  //     },
-  //   ]);
-  // });
+    expect(surveys).toEqual(mockSurveyModelListWithFlag());
+  });
 });

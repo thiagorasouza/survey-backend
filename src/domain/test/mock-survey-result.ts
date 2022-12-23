@@ -26,9 +26,9 @@ export const mockSurveyResultModelList = (): SurveyResultModel[] => [
     date: new Date(),
   },
   {
-    id: "any_id",
+    id: "other_id",
     accountId: "any_account_id",
-    surveyId: "any_survey_id",
+    surveyId: "other_survey_id",
     answer: "other_answer",
     date: new Date(),
   },
