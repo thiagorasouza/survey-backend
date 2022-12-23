@@ -3,6 +3,7 @@ import { LoadSurveysController } from "./load-surveys-controller";
 import MockDate from "mockdate";
 import { noContent, ok, serverError } from "../../../helpers/http/http-helper";
 import { mockLoadSurveys, mockSurveyModelList } from "../../../../domain/test";
+import { HttpRequest } from "../add-survey/add-survey-controller-protocols";
 
 interface SutTypes {
   sut: LoadSurveysController;
@@ -16,6 +17,10 @@ const makeSut = (): SutTypes => {
   return { sut, loadSurveysStub };
 };
 
+const mockRequest = (): HttpRequest => ({
+  accountId: "any_account_id",
+});
+
 describe("LoadSurveys Controller", () => {
   beforeAll(() => {
     MockDate.set(new Date());
@@ -25,20 +30,21 @@ describe("LoadSurveys Controller", () => {
     MockDate.reset();
   });
 
-  it("should call LoadSurveys", async () => {
+  it("should call LoadSurveys with correct value", async () => {
     const { sut, loadSurveysStub } = makeSut();
 
     const loadSpy = jest.spyOn(loadSurveysStub, "load");
 
-    await sut.handle();
+    await sut.handle(mockRequest());
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
+    expect(loadSpy).toHaveBeenCalledWith("any_account_id");
   });
 
   it("should return 200 on success", async () => {
     const { sut } = makeSut();
 
-    const httpResponse = await sut.handle();
+    const httpResponse = await sut.handle(mockRequest());
 
     expect(httpResponse).toEqual(ok(mockSurveyModelList()));
   });
@@ -50,7 +56,7 @@ describe("LoadSurveys Controller", () => {
       .spyOn(loadSurveysStub, "load")
       .mockReturnValueOnce(Promise.resolve([]));
 
-    const httpResponse = await sut.handle();
+    const httpResponse = await sut.handle(mockRequest());
 
     expect(httpResponse).toEqual(noContent());
   });
@@ -61,7 +67,7 @@ describe("LoadSurveys Controller", () => {
       .spyOn(loadSurveysStub, "load")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const httpResponse = await sut.handle();
+    const httpResponse = await sut.handle(mockRequest());
 
     expect(httpResponse).toEqual(serverError(new Error()));
   });
