@@ -41,7 +41,7 @@ describe("DbLoadSurveyResult Usecase", () => {
     const { sut, loadSurveyByIdRepositoryStub } = makeSut();
     const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, "loadById");
 
-    await sut.load("any_survey_id");
+    await sut.load("any_survey_id", "any_account_id");
 
     expect(loadByIdSpy).toHaveBeenCalledWith("any_survey_id");
   });
@@ -53,7 +53,7 @@ describe("DbLoadSurveyResult Usecase", () => {
       "loadBySurveyId"
     );
 
-    await sut.load("any_survey_id");
+    await sut.load("any_survey_id", "any_account_id");
 
     expect(loadBySurveyIdSpy).toHaveBeenCalledWith("any_survey_id");
   });
@@ -64,7 +64,7 @@ describe("DbLoadSurveyResult Usecase", () => {
       .spyOn(loadSurveyByIdRepositoryStub, "loadById")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const promise = sut.load("any_survey_id");
+    const promise = sut.load("any_survey_id", "any_account_id");
 
     expect(promise).rejects.toThrow();
   });
@@ -75,7 +75,7 @@ describe("DbLoadSurveyResult Usecase", () => {
       .spyOn(loadSurveyResultRepositoryStub, "loadBySurveyId")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const promise = sut.load("any_survey_id");
+    const promise = sut.load("any_survey_id", "any_account_id");
 
     expect(promise).rejects.toThrow();
   });
@@ -83,7 +83,7 @@ describe("DbLoadSurveyResult Usecase", () => {
   it("should return the compiled survey results on success", async () => {
     const { sut } = makeSut();
 
-    const surveys = await sut.load("any_survey_id");
+    const surveys = await sut.load("any_survey_id", "any_account_id");
 
     expect(surveys).toEqual(mockSurveyCompiledModel());
   });

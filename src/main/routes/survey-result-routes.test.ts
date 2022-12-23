@@ -103,6 +103,7 @@ describe("Survey Routes", () => {
           },
           { answer: "Answer 2" },
         ],
+        date: new Date(),
       });
       const { insertedId } = result;
       const surveyId = insertedId.toString();

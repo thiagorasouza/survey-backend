@@ -119,7 +119,10 @@ describe("SaveSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
-    expect(loadSpy).toHaveBeenCalledWith("any_survey_id");
+    expect(loadSpy).toHaveBeenCalledWith(
+      request.params.surveyId,
+      request.accountId
+    );
   });
 
   it("should return 500 if LoadSurveyById throws", async () => {

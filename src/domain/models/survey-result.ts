@@ -14,6 +14,7 @@ export interface SurveyCompiledModel {
     answer: string;
     count: number;
     percent: number;
+    isCurrentAccountAnswer: boolean;
   }[];
   date: Date;
 }

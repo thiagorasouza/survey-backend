@@ -73,7 +73,7 @@ describe("LoadSurveyResultController", () => {
     expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
   });
 
-  it("should call LoadSurveyResult with correct value", async () => {
+  it("should call LoadSurveyResult with correct values", async () => {
     const { sut, loadSurveyResultStub } = makeSut();
 
     const loadSpy = jest.spyOn(loadSurveyResultStub, "load");
@@ -82,7 +82,10 @@ describe("LoadSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
-    expect(loadSpy).toHaveBeenCalledWith("any_survey_id");
+    expect(loadSpy).toHaveBeenCalledWith(
+      request.params.surveyId,
+      request.accountId
+    );
   });
 
   it("should return 500 if LoadSurveyById throws", async () => {
