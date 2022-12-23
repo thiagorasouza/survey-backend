@@ -24,21 +24,5 @@ export class LoadSurveyResultController implements Controller {
     } catch (error) {
       return serverError(error);
     }
-    // try {
-    //   const accountId = httpRequest.accountId;
-    //   const { surveyId } = httpRequest.params;
-    //   const { answer } = httpRequest.body;
-
-    //   const survey = await this.loadSurveyById.loadById(surveyId);
-    //   if (!survey) {
-    //     return forbidden(new InvalidParamError("surveyId"));
-    //   }
-
-    //   const surveyCompiled = await this.loadSurveyResult.load(surveyId);
-
-    //   return ok(surveyCompiled);
-    // } catch (error) {
-    //   return serverError(error);
-    // }
   }
 }

@@ -114,7 +114,6 @@ describe("LoadSurveyResultController", () => {
 
     const request = mockRequest();
     const httpResponse = await sut.handle(request);
-    console.log("🚀 ~ httpResponse", httpResponse);
 
     expect(httpResponse).toEqual(ok(mockSurveyCompiledModel()));
   });

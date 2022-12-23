@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { LoadByAccountIdRepository } from "../../../../data/protocols/db/survey-result/load-by-account-id-repository";
 import { LoadSurveyResultRepository } from "../../../../data/protocols/db/survey-result/load-survey-result-repository";
 import { SaveSurveyResultRepository } from "../../../../data/protocols/db/survey-result/save-survey-result-repository";
 import { SurveyResultModel } from "../../../../domain/models/survey-result";
@@ -6,7 +7,10 @@ import { SaveSurveyResultParams } from "../../../../domain/usecases/survey-resul
 import { MongoHelper } from "../helpers/mongo-helper";
 
 export class SurveyResultMongoRepository
-  implements SaveSurveyResultRepository, LoadSurveyResultRepository
+  implements
+    SaveSurveyResultRepository,
+    LoadSurveyResultRepository,
+    LoadByAccountIdRepository
 {
   async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
     const surveyResultsCollection = await MongoHelper.getCollection(
@@ -29,6 +33,17 @@ export class SurveyResultMongoRepository
     );
     const response = await surveyResultsCollection
       .find({ surveyId: new ObjectId(surveyId) })
+      .toArray();
+
+    return response.map(this.mapIds);
+  }
+
+  async loadByAccountId(accountId: string): Promise<SurveyResultModel[]> {
+    const surveyResultsCollection = await MongoHelper.getCollection(
+      "surveyResults"
+    );
+    const response = await surveyResultsCollection
+      .find({ accountId: new ObjectId(accountId) })
       .toArray();
 
     return response.map(this.mapIds);
