@@ -69,6 +69,18 @@ describe("DbLoadSurveys", () => {
     expect(loadByAccountIdSpy).toHaveBeenCalledWith("any_account_id");
   });
 
+  it("should throw if LoadByAccountIdRepository throws", async () => {
+    const { sut, loadByAccountIdRepositoryStub } = makeSut();
+
+    jest
+      .spyOn(loadByAccountIdRepositoryStub, "loadByAccountId")
+      .mockReturnValueOnce(Promise.reject(new Error()));
+
+    const promise = sut.load("any_account_id");
+
+    expect(promise).rejects.toThrow();
+  });
+
   // it("should return a compiled list of surveys on success", async () => {
   //   const { sut } = makeSut();
 
