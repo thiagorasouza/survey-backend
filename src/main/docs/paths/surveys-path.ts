@@ -6,7 +6,7 @@ export const surveysPath = {
       },
     ],
     tags: ["Surveys"],
-    summary: "API to create and list surveys",
+    summary: "API to list surveys",
     responses: {
       200: {
         description: "Success",
