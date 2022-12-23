@@ -6,6 +6,7 @@ import {
 } from "../../../../data/usecases/survey/add-survey/db-add-survey-protocols";
 import { LoadSurveyByIdRepository } from "../../../../data/usecases/survey/load-survey-by-id/db-load-survey-by-id-protocols";
 import { SurveyModel } from "../../../../domain/models/survey";
+import { SurveyResultModel } from "../../../../domain/models/survey-result";
 import { MongoHelper } from "../helpers/mongo-helper";
 
 export class SurveyMongoRepository

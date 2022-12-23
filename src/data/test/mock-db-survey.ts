@@ -1,5 +1,11 @@
 import { SurveyModel } from "../../domain/models/survey";
-import { mockSurveyModel, mockSurveyModelList } from "../../domain/test";
+import { SurveyResultModel } from "../../domain/models/survey-result";
+import {
+  mockSurveyModel,
+  mockSurveyModelList,
+  mockSurveyResultModelList,
+} from "../../domain/test";
+import { LoadByAccountIdRepository } from "../protocols/db/survey-result/load-by-account-id-repository";
 import { AddSurveyRepository } from "../protocols/db/survey/add-survey-repository";
 import { LoadSurveyByIdRepository } from "../protocols/db/survey/load-survey-by-id-repository";
 import { LoadSurveysRepository } from "../protocols/db/survey/load-surveys-repository";
@@ -29,7 +35,20 @@ export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
     async loadAll(): Promise<SurveyModel[]> {
       return mockSurveyModelList();
     }
+    async loadByAccountId(accountId: string): Promise<SurveyResultModel[]> {
+      return mockSurveyResultModelList();
+    }
   }
 
   return new LoadSurveysRepositoryStub();
+};
+
+export const mockLoadByAccountIdRepository = (): LoadByAccountIdRepository => {
+  class LoadByAccountIdRepositoryStub implements LoadByAccountIdRepository {
+    async loadByAccountId(accountId: string): Promise<SurveyResultModel[]> {
+      return mockSurveyResultModelList();
+    }
+  }
+
+  return new LoadByAccountIdRepositoryStub();
 };
