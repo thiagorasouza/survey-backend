@@ -59,18 +59,18 @@ describe("LoadSurveyResultController", () => {
     expect(loadByIdSpy).toHaveBeenCalledWith(request.params.surveyId);
   });
 
-  // it("should return 403 if LoadSurveyById returns null", async () => {
-  //   const { sut, loadSurveyByIdStub } = makeSut();
+  it("should return 403 if LoadSurveyById returns null", async () => {
+    const { sut, loadSurveyByIdStub } = makeSut();
 
-  //   jest
-  //     .spyOn(loadSurveyByIdStub, "loadById")
-  //     .mockReturnValueOnce(Promise.resolve(null));
+    jest
+      .spyOn(loadSurveyByIdStub, "loadById")
+      .mockReturnValueOnce(Promise.resolve(null));
 
-  //   const request = mockRequest();
-  //   const httpResponse = await sut.handle(request);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
-  //   expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
-  // });
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
+  });
 
   // it("should call LoadSurveyResult with correct value", async () => {
   //   const { sut, loadSurveyResultStub } = makeSut();
