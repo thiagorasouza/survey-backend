@@ -72,17 +72,17 @@ describe("LoadSurveyResultController", () => {
     expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
   });
 
-  // it("should call LoadSurveyResult with correct value", async () => {
-  //   const { sut, loadSurveyResultStub } = makeSut();
+  it("should call LoadSurveyResult with correct value", async () => {
+    const { sut, loadSurveyResultStub } = makeSut();
 
-  //   const loadSpy = jest.spyOn(loadSurveyResultStub, "load");
+    const loadSpy = jest.spyOn(loadSurveyResultStub, "load");
 
-  //   const request = mockRequest();
-  //   await sut.handle(request);
+    const request = mockRequest();
+    await sut.handle(request);
 
-  //   expect(loadSpy).toHaveBeenCalledTimes(1);
-  //   expect(loadSpy).toHaveBeenCalledWith("any_survey_id");
-  // });
+    expect(loadSpy).toHaveBeenCalledTimes(1);
+    expect(loadSpy).toHaveBeenCalledWith("any_survey_id");
+  });
 
   // it("should return 500 if LoadSurveyById throws", async () => {
   //   const { sut, loadSurveyByIdStub } = makeSut();

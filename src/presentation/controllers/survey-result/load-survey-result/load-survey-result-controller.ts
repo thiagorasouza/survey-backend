@@ -16,6 +16,8 @@ export class LoadSurveyResultController implements Controller {
     if (!survey) {
       return forbidden(new InvalidParamError("surveyId"));
     }
+
+    const surveyCompiled = await this.loadSurveyResult.load(surveyId);
     // try {
     //   const accountId = httpRequest.accountId;
     //   const { surveyId } = httpRequest.params;
@@ -25,18 +27,6 @@ export class LoadSurveyResultController implements Controller {
     //   if (!survey) {
     //     return forbidden(new InvalidParamError("surveyId"));
     //   }
-
-    //   const surveyAnswers = survey.answers.map((item) => item.answer);
-    //   if (!surveyAnswers.includes(answer)) {
-    //     return forbidden(new InvalidParamError("answer"));
-    //   }
-
-    //   await this.saveSurveyResult.save({
-    //     accountId,
-    //     surveyId,
-    //     answer,
-    //     date: new Date(),
-    //   });
 
     //   const surveyCompiled = await this.loadSurveyResult.load(surveyId);
 
