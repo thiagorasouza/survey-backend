@@ -12,7 +12,11 @@ import {
   ok,
   serverError,
 } from "../../../helpers/http/http-helper";
-import { mockAddAccount, mockAuthentication } from "../../../../domain/test";
+import {
+  mockAddAccount,
+  mockAuthentication,
+  mockAuthenticationModel,
+} from "../../../../domain/test";
 import { mockValidation } from "../../../test";
 
 interface SutTypes {
@@ -128,12 +132,12 @@ describe("SignUp Controller", () => {
     expect(httpResponse).toEqual(forbidden(new EmailInUseError()));
   });
 
-  it("should return accessToken if valid credentials are provided", async () => {
+  it("should return name and access token if valid credentials are provided", async () => {
     const { sut } = makeSut();
 
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
 
-    expect(httpResponse).toEqual(ok({ accessToken: "any_token" }));
+    expect(httpResponse).toEqual(ok(mockAuthenticationModel()));
   });
 });

@@ -11,7 +11,10 @@ import {
   Validation,
 } from "./login-controller-protocols";
 import { LoginController } from "./login-controller";
-import { mockAuthentication } from "../../../../domain/test";
+import {
+  mockAuthentication,
+  mockAuthenticationModel,
+} from "../../../../domain/test";
 import { mockValidation } from "../../../test";
 
 interface SutTypes {
@@ -73,15 +76,6 @@ describe("Login Controller", () => {
     expect(httpResponse).toEqual(serverError(new Error()));
   });
 
-  it("should return 200 if valid credentials are provided", async () => {
-    const { sut } = makeSut();
-
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
-
-    expect(httpResponse).toEqual(ok({ accessToken: "any_token" }));
-  });
-
   test("Should call Validation with correct value", async () => {
     const { sut, validationStub } = makeSut();
     const validate = jest.spyOn(validationStub, "validate");
@@ -101,5 +95,14 @@ describe("Login Controller", () => {
     expect(httpResponse).toEqual(
       badRequest(new MissingParamError("any_field"))
     );
+  });
+
+  it("should return 200 if valid credentials are provided", async () => {
+    const { sut } = makeSut();
+
+    const httpRequest = mockRequest();
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(ok(mockAuthenticationModel()));
   });
 });

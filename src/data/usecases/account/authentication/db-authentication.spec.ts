@@ -6,7 +6,10 @@ import {
   UpdateAccessTokenRepository,
 } from "./db-authentication-protocols";
 import { DbAuthentication } from "./db-authentication";
-import { mockAuthenticationParams } from "../../../../domain/test";
+import {
+  mockAuthenticationModel,
+  mockAuthenticationParams,
+} from "../../../../domain/test";
 import {
   mockEncrypter,
   mockHashComparer,
@@ -112,12 +115,6 @@ describe("DbAuthentication Use Case ", () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it("should throw if Encrypter throws", async () => {
-    const { sut } = makeSut();
-    const accessToken = await sut.auth(mockAuthenticationParams());
-    await expect(accessToken).toBe("any_token");
-  });
-
   it("should call UpdateAccessTokenRepository with correct values", async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut();
     const updateSpy = jest.spyOn(
@@ -136,5 +133,11 @@ describe("DbAuthentication Use Case ", () => {
       .mockReturnValueOnce(Promise.reject(new Error()));
     const promise = sut.auth(mockAuthenticationParams());
     await expect(promise).rejects.toThrow();
+  });
+
+  it("should return token and name on success", async () => {
+    const { sut } = makeSut();
+    const accessToken = await sut.auth(mockAuthenticationParams());
+    await expect(accessToken).toEqual(mockAuthenticationModel());
   });
 });
