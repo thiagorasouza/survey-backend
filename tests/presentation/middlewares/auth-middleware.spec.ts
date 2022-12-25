@@ -5,8 +5,10 @@ import {
   forbidden,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
-import { AuthMiddleware } from "../../../src/presentation/middlewares/auth-middleware";
-import { HttpRequest } from "../../../src/presentation/protocols";
+import {
+  AuthMiddleware,
+  AuthRequest,
+} from "../../../src/presentation/middlewares/auth-middleware";
 import { mockLoadAccountByToken } from "../../domain/mocks";
 
 interface SutTypes {
@@ -20,10 +22,8 @@ const makeSut = (role?: string): SutTypes => {
   return { sut, loadAccountByTokenStub };
 };
 
-const mockRequest = (): HttpRequest => ({
-  headers: {
-    "x-access-token": "any_token",
-  },
+const mockRequest = (): AuthRequest => ({
+  accessToken: "any_token",
 });
 
 describe("Auth Middleware", () => {
@@ -37,8 +37,8 @@ describe("Auth Middleware", () => {
     const role = "any_role";
     const { sut, loadAccountByTokenStub } = makeSut(role);
     const loadSpy = jest.spyOn(loadAccountByTokenStub, "load");
-    const httpRequest = mockRequest();
-    await sut.handle(httpRequest);
+    const request = mockRequest();
+    await sut.handle(request);
     expect(loadSpy).toHaveBeenCalledWith("any_token", role);
   });
 
@@ -48,8 +48,8 @@ describe("Auth Middleware", () => {
       .spyOn(loadAccountByTokenStub, "load")
       .mockReturnValueOnce(Promise.resolve(null));
 
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
   });
@@ -57,8 +57,8 @@ describe("Auth Middleware", () => {
   it("should return 200 if LoadAccountByToken returns an account", async () => {
     const { sut } = makeSut();
 
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(ok({ accountId: "any_id" }));
   });
@@ -69,8 +69,8 @@ describe("Auth Middleware", () => {
       .spyOn(loadAccountByTokenStub, "load")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(serverError(new Error()));
   });
