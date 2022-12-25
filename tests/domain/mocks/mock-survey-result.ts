@@ -6,6 +6,7 @@ import {
   SaveSurveyResultRequestModel,
   SaveSurveyResult,
   LoadSurveyResult,
+  SaveSurveyResultResponseModel,
 } from "../../../src/domain/usecases";
 
 export const mockSurveyResultModel = (): SurveyResultModel => ({
@@ -69,7 +70,7 @@ export const mockSaveSurveyResultParams = (): SaveSurveyResultRequestModel => ({
 
 export const mockSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save(): Promise<SurveyResultModel> {
+    async save(): Promise<SaveSurveyResultResponseModel> {
       return mockSurveyResultModel();
     }
   }

@@ -7,6 +7,7 @@ import {
   LoadAccountByToken,
   AddAccountResponseModel,
   AuthenticationResponseModel,
+  LoadAccountByTokenResponseModel,
 } from "../../../src/domain/usecases";
 
 export const mockAccountModel = (): AccountModel => ({
@@ -56,7 +57,7 @@ export const mockAuthentication = (): Authentication => {
 
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load(): Promise<AccountModel> {
+    async load(): Promise<LoadAccountByTokenResponseModel> {
       return mockAccountModel();
     }
   }

@@ -1,4 +1,3 @@
-import { AccountModel } from "../../domain/models";
 import {
   LoadAccountByToken,
   LoadAccountByTokenRequestModel,

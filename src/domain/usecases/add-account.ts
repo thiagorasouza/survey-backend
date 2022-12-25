@@ -1,6 +1,8 @@
-import { AccountModel } from "../models/account";
-
-export type AddAccountRequestModel = Omit<AccountModel, "id">;
+export interface AddAccountRequestModel {
+  name: string;
+  email: string;
+  password: string;
+}
 
 export type AddAccountResponseModel = boolean;
 
