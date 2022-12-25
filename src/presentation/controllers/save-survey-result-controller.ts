@@ -3,7 +3,13 @@ import { SaveSurveyResult } from "../../domain/usecases/save-survey-result";
 import { LoadSurveyById } from "../../domain/usecases/load-survey-by-id";
 import { InvalidParamError } from "../errors";
 import { forbidden, ok, serverError } from "../helpers/http-helper";
-import { Controller, HttpRequest, HttpResponse } from "../protocols";
+import { Controller, HttpResponse } from "../protocols";
+
+export interface SaveSurveyResultRequest {
+  accountId: string;
+  surveyId: string;
+  answer: string;
+}
 
 export class SaveSurveyResultController implements Controller {
   constructor(
@@ -12,11 +18,9 @@ export class SaveSurveyResultController implements Controller {
     private readonly loadSurveyResult: LoadSurveyResult
   ) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: SaveSurveyResultRequest): Promise<HttpResponse> {
     try {
-      const accountId = httpRequest.accountId;
-      const { surveyId } = httpRequest.params;
-      const { answer } = httpRequest.body;
+      const { accountId, surveyId, answer } = request;
 
       const survey = await this.loadSurveyById.loadById(surveyId);
       if (!survey) {

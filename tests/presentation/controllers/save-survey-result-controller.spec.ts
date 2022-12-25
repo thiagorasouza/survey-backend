@@ -4,14 +4,16 @@ import {
   SaveSurveyResult,
   LoadSurveyResult,
 } from "../../../src/domain/usecases";
-import { SaveSurveyResultController } from "../../../src/presentation/controllers/save-survey-result-controller";
+import {
+  SaveSurveyResultController,
+  SaveSurveyResultRequest,
+} from "../../../src/presentation/controllers/save-survey-result-controller";
 import { InvalidParamError } from "../../../src/presentation/errors";
 import {
   ok,
   forbidden,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
-import { HttpRequest } from "../../../src/presentation/protocols";
 import {
   mockLoadSurveyById,
   mockSaveSurveyResult,
@@ -44,13 +46,9 @@ const makeSut = (): SutTypes => {
   };
 };
 
-const mockRequest = (): HttpRequest => ({
-  params: {
-    surveyId: "any_survey_id",
-  },
-  body: {
-    answer: "any_answer",
-  },
+const mockRequest = (): SaveSurveyResultRequest => ({
+  surveyId: "any_survey_id",
+  answer: "any_answer",
   accountId: "any_account_id",
 });
 
@@ -72,7 +70,7 @@ describe("SaveSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadByIdSpy).toHaveBeenCalledTimes(1);
-    expect(loadByIdSpy).toHaveBeenCalledWith(request.params.surveyId);
+    expect(loadByIdSpy).toHaveBeenCalledWith(request.surveyId);
   });
 
   it("should return 403 if LoadSurveyById returns null", async () => {
@@ -91,10 +89,10 @@ describe("SaveSurveyResultController", () => {
   it("should return 403 if answer is not valid", async () => {
     const { sut } = makeSut();
 
-    const httpRequest = mockRequest();
-    httpRequest.body.answer = "invalid_answer";
+    const request = mockRequest();
+    request.answer = "invalid_answer";
 
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(forbidden(new InvalidParamError("answer")));
   });
@@ -110,8 +108,8 @@ describe("SaveSurveyResultController", () => {
     expect(saveSpy).toHaveBeenCalledTimes(1);
     expect(saveSpy).toHaveBeenCalledWith({
       accountId: request.accountId,
-      surveyId: request.params.surveyId,
-      answer: request.body.answer,
+      surveyId: request.surveyId,
+      answer: request.answer,
       date: new Date(),
     });
   });
@@ -125,10 +123,7 @@ describe("SaveSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
-    expect(loadSpy).toHaveBeenCalledWith(
-      request.params.surveyId,
-      request.accountId
-    );
+    expect(loadSpy).toHaveBeenCalledWith(request.surveyId, request.accountId);
   });
 
   it("should return 500 if LoadSurveyById throws", async () => {
