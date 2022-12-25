@@ -1,13 +1,15 @@
 import MockDate from "mockdate";
 import { LoadSurveyById, LoadSurveyResult } from "../../../src/domain/usecases";
-import { LoadSurveyResultController } from "../../../src/presentation/controllers/load-survey-result-controller";
+import {
+  LoadSurveyResultController,
+  LoadSurveyResultRequest,
+} from "../../../src/presentation/controllers/load-survey-result-controller";
 import { InvalidParamError } from "../../../src/presentation/errors";
 import {
   ok,
   forbidden,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
-import { HttpRequest } from "../../../src/presentation/protocols";
 import {
   mockLoadSurveyById,
   mockLoadSurveyResult,
@@ -35,10 +37,8 @@ const makeSut = (): SutTypes => {
   };
 };
 
-const mockRequest = (): HttpRequest => ({
-  params: {
-    surveyId: "any_survey_id",
-  },
+const mockRequest = (): LoadSurveyResultRequest => ({
+  surveyId: "any_survey_id",
   accountId: "any_account_id",
 });
 
@@ -60,7 +60,7 @@ describe("LoadSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadByIdSpy).toHaveBeenCalledTimes(1);
-    expect(loadByIdSpy).toHaveBeenCalledWith(request.params.surveyId);
+    expect(loadByIdSpy).toHaveBeenCalledWith(request.surveyId);
   });
 
   it("should return 403 if LoadSurveyById returns null", async () => {
@@ -85,10 +85,7 @@ describe("LoadSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
-    expect(loadSpy).toHaveBeenCalledWith(
-      request.params.surveyId,
-      request.accountId
-    );
+    expect(loadSpy).toHaveBeenCalledWith(request.surveyId, request.accountId);
   });
 
   it("should return 500 if LoadSurveyById throws", async () => {
