@@ -1,12 +1,15 @@
 import MockDate from "mockdate";
 import { AddSurvey } from "../../../src/domain/usecases";
-import { AddSurveyController } from "../../../src/presentation/controllers/add-survey-controller";
+import {
+  AddSurveyController,
+  AddSurveyRequest,
+} from "../../../src/presentation/controllers/add-survey-controller";
 import {
   badRequest,
   noContent,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
-import { Validation, HttpRequest } from "../../../src/presentation/protocols";
+import { Validation } from "../../../src/presentation/protocols";
 import { mockAddSurvey } from "../../domain/mocks";
 import { mockValidation } from "../mocks";
 
@@ -24,17 +27,14 @@ const makeSut = (): SutTypes => {
   return { sut, validationStub, addSurveyStub };
 };
 
-const mockRequest = (): HttpRequest => ({
-  body: {
-    question: "any_question",
-    answers: [
-      {
-        image: "any_image",
-        answer: "any_answer",
-      },
-    ],
-    date: new Date(),
-  },
+const mockRequest = (): AddSurveyRequest => ({
+  question: "any_question",
+  answers: [
+    {
+      image: "any_image",
+      answer: "any_answer",
+    },
+  ],
 });
 
 describe("Add Survey Controller", () => {
@@ -50,18 +50,18 @@ describe("Add Survey Controller", () => {
     const { sut, validationStub } = makeSut();
     const validateSpy = jest.spyOn(validationStub, "validate");
 
-    const httpRequest = mockRequest();
-    await sut.handle(httpRequest);
+    const request = mockRequest();
+    await sut.handle(request);
 
-    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
+    expect(validateSpy).toHaveBeenCalledWith(request);
   });
 
   it("should return 400 if Validation fails", async () => {
     const { sut, validationStub } = makeSut();
     jest.spyOn(validationStub, "validate").mockReturnValueOnce(new Error());
 
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(badRequest(new Error()));
   });
@@ -70,10 +70,10 @@ describe("Add Survey Controller", () => {
     const { sut, addSurveyStub } = makeSut();
     const addSpy = jest.spyOn(addSurveyStub, "add");
 
-    const httpRequest = mockRequest();
-    await sut.handle(httpRequest);
+    const request = mockRequest();
+    await sut.handle(request);
 
-    expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
+    expect(addSpy).toHaveBeenCalledWith({ ...request, date: new Date() });
   });
 
   it("should return 500 if AddSurvey throws", async () => {
