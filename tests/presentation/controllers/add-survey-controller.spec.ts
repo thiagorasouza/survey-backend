@@ -82,8 +82,8 @@ describe("Add Survey Controller", () => {
       .spyOn(addSurveyStub, "add")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(serverError(new Error()));
   });
@@ -91,8 +91,8 @@ describe("Add Survey Controller", () => {
   it("should return 204 on success", async () => {
     const { sut } = makeSut();
 
-    const httpRequest = mockRequest();
-    const httpResponse = await sut.handle(httpRequest);
+    const request = mockRequest();
+    const httpResponse = await sut.handle(request);
 
     expect(httpResponse).toEqual(noContent());
   });
