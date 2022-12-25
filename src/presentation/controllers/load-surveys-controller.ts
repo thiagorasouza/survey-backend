@@ -12,7 +12,7 @@ export class LoadSurveysController implements Controller {
   async handle(request: LoadSurveysRequest): Promise<HttpResponse> {
     try {
       const { accountId } = request;
-      const surveys = await this.loadSurveys.load(accountId);
+      const surveys = await this.loadSurveys.load({ accountId });
       if (surveys.length === 0) {
         return noContent();
       }

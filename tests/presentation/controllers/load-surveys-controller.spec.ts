@@ -9,6 +9,7 @@ import {
   noContent,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
+import { mockLoadSurveysRequestModel } from "../../data/mocks";
 import { mockLoadSurveys, mockSurveyModelList } from "../../domain/mocks";
 
 interface SutTypes {
@@ -44,7 +45,7 @@ describe("LoadSurveys Controller", () => {
     await sut.handle(mockRequest());
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
-    expect(loadSpy).toHaveBeenCalledWith("any_account_id");
+    expect(loadSpy).toHaveBeenCalledWith(mockLoadSurveysRequestModel());
   });
 
   it("should return 200 on success", async () => {

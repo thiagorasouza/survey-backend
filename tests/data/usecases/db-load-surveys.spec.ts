@@ -8,6 +8,7 @@ import { mockSurveyModelListWithFlag } from "../../domain/mocks";
 import {
   mockLoadSurveysRepository,
   mockLoadByAccountIdRepository,
+  mockLoadSurveysRequestModel,
 } from "../mocks";
 
 interface SutTypes {
@@ -41,7 +42,8 @@ describe("DbLoadSurveys", () => {
 
     const loadAllSpy = jest.spyOn(loadSurveysRepositoryStub, "loadAll");
 
-    await sut.load("any_account_id");
+    const requestModel = mockLoadSurveysRequestModel();
+    await sut.load(requestModel);
 
     expect(loadAllSpy).toHaveBeenCalledTimes(1);
   });
@@ -53,7 +55,8 @@ describe("DbLoadSurveys", () => {
       .spyOn(loadSurveysRepositoryStub, "loadAll")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const promise = sut.load("any_account_id");
+    const requestModel = mockLoadSurveysRequestModel();
+    const promise = sut.load(requestModel);
 
     expect(promise).rejects.toThrow();
   });
@@ -66,10 +69,11 @@ describe("DbLoadSurveys", () => {
       "loadByAccountId"
     );
 
-    await sut.load("any_account_id");
+    const requestModel = mockLoadSurveysRequestModel();
+    await sut.load(requestModel);
 
     expect(loadByAccountIdSpy).toHaveBeenCalledTimes(1);
-    expect(loadByAccountIdSpy).toHaveBeenCalledWith("any_account_id");
+    expect(loadByAccountIdSpy).toHaveBeenCalledWith(requestModel.accountId);
   });
 
   it("should throw if LoadByAccountIdRepository throws", async () => {
@@ -79,7 +83,8 @@ describe("DbLoadSurveys", () => {
       .spyOn(loadByAccountIdRepositoryStub, "loadByAccountId")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const promise = sut.load("any_account_id");
+    const requestModel = mockLoadSurveysRequestModel();
+    const promise = sut.load(requestModel);
 
     expect(promise).rejects.toThrow();
   });
@@ -87,7 +92,8 @@ describe("DbLoadSurveys", () => {
   it("should return a compiled list of surveys on success", async () => {
     const { sut } = makeSut();
 
-    const surveys = await sut.load("any_account_id");
+    const requestModel = mockLoadSurveysRequestModel();
+    const surveys = await sut.load(requestModel);
 
     expect(surveys).toEqual(mockSurveyModelListWithFlag());
   });

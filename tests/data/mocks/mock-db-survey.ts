@@ -5,7 +5,10 @@ import {
   LoadByAccountIdRepository,
 } from "../../../src/data/protocols";
 import { SurveyModel, SurveyResultModel } from "../../../src/domain/models";
-import { LoadSurveyByIdRequestModel } from "../../../src/domain/usecases";
+import {
+  LoadSurveyByIdRequestModel,
+  LoadSurveysRequestModel,
+} from "../../../src/domain/usecases";
 import {
   mockSurveyModel,
   mockSurveyModelList,
@@ -56,3 +59,7 @@ export const mockLoadSurveyByIdRequestModel =
   (): LoadSurveyByIdRequestModel => ({
     id: "any_survey_id",
   });
+
+export const mockLoadSurveysRequestModel = (): LoadSurveysRequestModel => ({
+  accountId: "any_account_id",
+});
