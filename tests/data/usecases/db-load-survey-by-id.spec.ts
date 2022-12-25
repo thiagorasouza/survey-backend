@@ -2,7 +2,10 @@ import MockDate from "mockdate";
 import { LoadSurveyByIdRepository } from "../../../src/data/protocols";
 import { DbLoadSurveyById } from "../../../src/data/usecases";
 import { mockSurveyModel } from "../../domain/mocks";
-import { mockLoadSurveyByIdRepository } from "../mocks";
+import {
+  mockLoadSurveyByIdRepository,
+  mockLoadSurveyByIdRequestModel,
+} from "../mocks";
 
 interface SutTypes {
   sut: DbLoadSurveyById;
@@ -30,16 +33,18 @@ describe("DbLoadSurveyById", () => {
 
     const loadAllSpy = jest.spyOn(loadSurveyByIdRepositoryStub, "loadById");
 
-    await sut.loadById("any_id");
+    const requestModel = mockLoadSurveyByIdRequestModel();
+    await sut.loadById(requestModel);
 
     expect(loadAllSpy).toHaveBeenCalledTimes(1);
-    expect(loadAllSpy).toHaveBeenCalledWith("any_id");
+    expect(loadAllSpy).toHaveBeenCalledWith(requestModel.id);
   });
 
   it("should return survey on success", async () => {
     const { sut } = makeSut();
 
-    const survey = await sut.loadById("any_id");
+    const requestModel = mockLoadSurveyByIdRequestModel();
+    const survey = await sut.loadById(requestModel);
 
     expect(survey).toEqual(mockSurveyModel());
   });
@@ -51,7 +56,8 @@ describe("DbLoadSurveyById", () => {
       .spyOn(loadSurveyByIdRepositoryStub, "loadById")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const promise = sut.loadById("any_id");
+    const requestModel = mockLoadSurveyByIdRequestModel();
+    const promise = sut.loadById(requestModel);
 
     expect(promise).rejects.toThrow();
   });

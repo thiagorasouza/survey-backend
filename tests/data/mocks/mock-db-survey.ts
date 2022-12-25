@@ -5,6 +5,7 @@ import {
   LoadByAccountIdRepository,
 } from "../../../src/data/protocols";
 import { SurveyModel, SurveyResultModel } from "../../../src/domain/models";
+import { LoadSurveyByIdRequestModel } from "../../../src/domain/usecases";
 import {
   mockSurveyModel,
   mockSurveyModelList,
@@ -43,10 +44,15 @@ export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
 
 export const mockLoadByAccountIdRepository = (): LoadByAccountIdRepository => {
   class LoadByAccountIdRepositoryStub implements LoadByAccountIdRepository {
-    async loadByAccountId(accountId: string): Promise<SurveyResultModel[]> {
+    async loadByAccountId(): Promise<SurveyResultModel[]> {
       return mockSurveyResultModelList();
     }
   }
 
   return new LoadByAccountIdRepositoryStub();
 };
+
+export const mockLoadSurveyByIdRequestModel =
+  (): LoadSurveyByIdRequestModel => ({
+    id: "any_survey_id",
+  });

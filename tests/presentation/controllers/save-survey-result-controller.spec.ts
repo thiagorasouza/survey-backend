@@ -14,6 +14,7 @@ import {
   forbidden,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
+import { mockLoadSurveyByIdRequestModel } from "../../data/mocks";
 import {
   mockLoadSurveyById,
   mockSaveSurveyResult,
@@ -70,7 +71,7 @@ describe("SaveSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadByIdSpy).toHaveBeenCalledTimes(1);
-    expect(loadByIdSpy).toHaveBeenCalledWith(request.surveyId);
+    expect(loadByIdSpy).toHaveBeenCalledWith(mockLoadSurveyByIdRequestModel());
   });
 
   it("should return 403 if LoadSurveyById returns null", async () => {

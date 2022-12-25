@@ -22,7 +22,7 @@ export class SaveSurveyResultController implements Controller {
     try {
       const { accountId, surveyId, answer } = request;
 
-      const survey = await this.loadSurveyById.loadById(surveyId);
+      const survey = await this.loadSurveyById.loadById({ id: surveyId });
       if (!survey) {
         return forbidden(new InvalidParamError("surveyId"));
       }

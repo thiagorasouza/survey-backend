@@ -1,5 +1,8 @@
-import { SurveyModel } from "../../domain/models";
-import { LoadSurveyById } from "../../domain/usecases";
+import {
+  LoadSurveyById,
+  LoadSurveyByIdRequestModel,
+  LoadSurveyByIdResponseModel,
+} from "../../domain/usecases";
 import { LoadSurveyByIdRepository } from "../protocols";
 
 export class DbLoadSurveyById implements LoadSurveyById {
@@ -7,7 +10,9 @@ export class DbLoadSurveyById implements LoadSurveyById {
     private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository
   ) {}
 
-  async loadById(id: string): Promise<SurveyModel> {
-    return await this.loadSurveyByIdRepository.loadById(id);
+  async loadById(
+    requestModel: LoadSurveyByIdRequestModel
+  ): Promise<LoadSurveyByIdResponseModel> {
+    return await this.loadSurveyByIdRepository.loadById(requestModel.id);
   }
 }
