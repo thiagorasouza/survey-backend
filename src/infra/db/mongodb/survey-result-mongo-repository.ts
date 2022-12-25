@@ -5,7 +5,7 @@ import {
   LoadByAccountIdRepository,
 } from "../../../data/protocols";
 import { SurveyResultModel } from "../../../domain/models";
-import { SaveSurveyResultParams } from "../../../domain/usecases";
+import { SaveSurveyResultRequestModel } from "../../../domain/usecases";
 import { MongoHelper } from "./mongo-helper";
 
 export class SurveyResultMongoRepository
@@ -14,7 +14,7 @@ export class SurveyResultMongoRepository
     LoadSurveyResultRepository,
     LoadByAccountIdRepository
 {
-  async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
+  async save(data: SaveSurveyResultRequestModel): Promise<SurveyResultModel> {
     const surveyResultsCollection = await MongoHelper.getCollection(
       "surveyResults"
     );

@@ -1,7 +1,7 @@
 import { SurveyResultModel } from "../../../../domain/models/survey-result";
-import { SaveSurveyResultParams } from "../../../../domain/usecases/save-survey-result";
+import { SaveSurveyResultRequestModel } from "../../../../domain/usecases/save-survey-result";
 
 export interface SaveSurveyResultRepository {
-  save(data: SaveSurveyResultParams): Promise<SurveyResultModel>;
+  save(data: SaveSurveyResultRequestModel): Promise<SurveyResultModel>;
   loadBySurveyId(surveyId: string): Promise<SurveyResultModel[]>;
 }

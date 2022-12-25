@@ -3,7 +3,7 @@ import {
   SurveyCompiledModel,
 } from "../../../src/domain/models";
 import {
-  SaveSurveyResultParams,
+  SaveSurveyResultRequestModel,
   SaveSurveyResult,
   LoadSurveyResult,
 } from "../../../src/domain/usecases";
@@ -60,7 +60,7 @@ export const mockSurveyCompiledModel = (): SurveyCompiledModel => ({
   date: new Date(),
 });
 
-export const mockSaveSurveyResultParams = (): SaveSurveyResultParams => ({
+export const mockSaveSurveyResultParams = (): SaveSurveyResultRequestModel => ({
   surveyId: "any_survey_id",
   accountId: "any_account_id",
   answer: "any_answer",
