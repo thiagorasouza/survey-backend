@@ -1,4 +1,4 @@
-import { LogMongoRespository } from "../../../infra/db/mongodb/log/log-mongo-repository";
+import { LogMongoRespository } from "../../../infra/db/mongodb/log-mongo-repository";
 import { Controller } from "../../../presentation/protocols";
 import { LogControllerDecorator } from "../../decorator/log-controller-decorator";
 
