@@ -1,4 +1,7 @@
-import { LoadAccountByToken } from "../../domain/usecases";
+import {
+  LoadAccountByToken,
+  LoadAccountByTokenRequestModel,
+} from "../../domain/usecases";
 import { AccessDeniedError } from "../errors";
 import { forbidden, ok, serverError } from "../helpers/http-helper";
 import { HttpResponse, Middleware } from "../protocols";
@@ -20,10 +23,12 @@ export class AuthMiddleware implements Middleware {
         return forbidden(new AccessDeniedError());
       }
 
-      const account = await this.loadAccountByToken.load(
+      const requestModel: LoadAccountByTokenRequestModel = {
         accessToken,
-        this.role
-      );
+        role: this.role,
+      };
+
+      const account = await this.loadAccountByToken.load(requestModel);
 
       if (!account) {
         return forbidden(new AccessDeniedError());

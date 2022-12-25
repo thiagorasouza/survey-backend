@@ -1,5 +1,14 @@
 import { AccountModel } from "../models/account";
 
+export interface LoadAccountByTokenRequestModel {
+  accessToken: string;
+  role?: string;
+}
+
+export type LoadAccountByTokenResponseModel = AccountModel;
+
 export interface LoadAccountByToken {
-  load(accessToken: string, role?: string): Promise<AccountModel | null>;
+  load(
+    requestModel: LoadAccountByTokenRequestModel
+  ): Promise<LoadAccountByTokenResponseModel>;
 }

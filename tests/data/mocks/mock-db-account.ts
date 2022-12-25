@@ -5,6 +5,7 @@ import {
   UpdateAccessTokenRepository,
 } from "../../../src/data/protocols";
 import { AccountModel } from "../../../src/domain/models";
+import { LoadAccountByTokenRequestModel } from "../../../src/domain/usecases";
 import { mockAccountModel } from "../../domain/mocks";
 
 export const mockAddAccountRepository = (): AddAccountRepository => {
@@ -53,3 +54,9 @@ export const mockUpdateAccessTokenRepository =
     }
     return new UpdateAccessTokenRepositoryStub();
   };
+
+export const mockLoadAccountByTokenRequestModel =
+  (): LoadAccountByTokenRequestModel => ({
+    accessToken: "any_token",
+    role: "any_role",
+  });

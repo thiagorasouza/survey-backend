@@ -4,7 +4,11 @@ import {
 } from "../../../src/data/protocols";
 import { DbLoadAccountByToken } from "../../../src/data/usecases";
 import { mockAccountModel } from "../../domain/mocks";
-import { mockLoadAccountByTokenRepository, mockDecrypter } from "../mocks";
+import {
+  mockLoadAccountByTokenRepository,
+  mockDecrypter,
+  mockLoadAccountByTokenRequestModel,
+} from "../mocks";
 
 interface SutTypes {
   sut: DbLoadAccountByToken;
@@ -28,9 +32,10 @@ describe("DbLoadAccountByToken Usecase", () => {
 
     const decryptSpy = jest.spyOn(decrypterStub, "decrypt");
 
-    await sut.load("any_token", "any_role");
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    await sut.load(requestModel);
 
-    expect(decryptSpy).toHaveBeenCalledWith("any_token");
+    expect(decryptSpy).toHaveBeenCalledWith(requestModel.accessToken);
   });
 
   it("should return null if Decrypter returns null", async () => {
@@ -40,7 +45,8 @@ describe("DbLoadAccountByToken Usecase", () => {
       .spyOn(decrypterStub, "decrypt")
       .mockReturnValueOnce(Promise.resolve(null));
 
-    const httpResponse = await sut.load("any_token", "any_role");
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    const httpResponse = await sut.load(requestModel);
 
     expect(httpResponse).toBe(null);
   });
@@ -53,9 +59,13 @@ describe("DbLoadAccountByToken Usecase", () => {
       "loadByToken"
     );
 
-    await sut.load("any_token", "any_role");
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    await sut.load(requestModel);
 
-    expect(loadByTokenSpy).toHaveBeenCalledWith("any_token", "any_role");
+    expect(loadByTokenSpy).toHaveBeenCalledWith(
+      requestModel.accessToken,
+      requestModel.role
+    );
   });
 
   it("should return null if LoadAccountByTokenRepository returns null", async () => {
@@ -65,17 +75,10 @@ describe("DbLoadAccountByToken Usecase", () => {
       .spyOn(loadAccountByTokenRepositoryStub, "loadByToken")
       .mockReturnValueOnce(Promise.resolve(null));
 
-    const httpResponse = await sut.load("any_token", "any_role");
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    const httpResponse = await sut.load(requestModel);
 
     expect(httpResponse).toBe(null);
-  });
-
-  it("should return an account on success", async () => {
-    const { sut } = makeSut();
-
-    const httpResponse = await sut.load("any_token", "any_role");
-
-    expect(httpResponse).toEqual(mockAccountModel());
   });
 
   it("should return null if Decrypter throws", async () => {
@@ -85,7 +88,8 @@ describe("DbLoadAccountByToken Usecase", () => {
       .spyOn(decrypterStub, "decrypt")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const result = await sut.load("any_token", "any_role");
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    const result = await sut.load(requestModel);
 
     expect(result).toBe(null);
   });
@@ -97,8 +101,18 @@ describe("DbLoadAccountByToken Usecase", () => {
       .spyOn(loadAccountByTokenRepositoryStub, "loadByToken")
       .mockReturnValueOnce(Promise.reject(new Error()));
 
-    const promise = sut.load("any_token", "any_role");
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    const promise = sut.load(requestModel);
 
     expect(promise).rejects.toThrow();
+  });
+
+  it("should return an account on success", async () => {
+    const { sut } = makeSut();
+
+    const requestModel = mockLoadAccountByTokenRequestModel();
+    const httpResponse = await sut.load(requestModel);
+
+    expect(httpResponse).toEqual(mockAccountModel());
   });
 });
