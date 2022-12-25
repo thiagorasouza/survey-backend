@@ -25,6 +25,7 @@ const makeSut = (): SutTypes => {
   jest
     .spyOn(loadAccountByEmailRepositoryStub, "loadByEmail")
     .mockReturnValue(null);
+
   const sut = new DbAddAccount(
     hasherStub,
     addAccountRepositoryStub,
@@ -42,26 +43,34 @@ const makeSut = (): SutTypes => {
 describe("DbAddAccount", () => {
   it("should call LoadAccountByEmailRepository with correct email", async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, "loadByEmail");
+
     await sut.add(mockAddAccountParams());
+
     expect(loadSpy).toHaveBeenCalledWith("any_email@mail.com");
   });
 
-  it("should return null if LoadAccountByEmailRepository does not return null", async () => {
+  it("should return false if LoadAccountByEmailRepository does not return null", async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+
     jest
       .spyOn(loadAccountByEmailRepositoryStub, "loadByEmail")
       .mockReturnValueOnce(Promise.resolve(mockAccountModel()));
+
     const result = await sut.add(mockAddAccountParams());
-    expect(result).toBe(null);
+    expect(result).toBe(false);
   });
 
   it("should throw if LoadAccountByEmailRepository throws", () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+
     jest
       .spyOn(loadAccountByEmailRepositoryStub, "loadByEmail")
       .mockReturnValueOnce(Promise.reject(new Error()));
+
     const accountData = mockAddAccountParams();
+
     expect(sut.add(accountData)).rejects.toThrow();
   });
 
@@ -105,19 +114,12 @@ describe("DbAddAccount", () => {
     expect(sut.add(accountData)).rejects.toThrow();
   });
 
-  it("should call AddAccountRepository with correct values", async () => {
-    const { sut, addAccountRepositoryStub } = makeSut();
-    jest.spyOn(addAccountRepositoryStub, "add");
-    const accountData = mockAddAccountParams();
-    const account = await sut.add(accountData);
-
-    expect(account).toEqual(mockAccountModel());
-  });
-
-  it("should return the new account on success", async () => {
+  it("should return true on success", async () => {
     const { sut } = makeSut();
+
     const accountData = mockAddAccountParams();
     const account = await sut.add(accountData);
-    expect(account).toEqual(mockAccountModel());
+
+    expect(account).toBe(true);
   });
 });

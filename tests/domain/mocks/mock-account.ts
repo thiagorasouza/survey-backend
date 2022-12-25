@@ -1,10 +1,11 @@
 import { AccountModel, AuthenticationModel } from "../../../src/domain/models";
 import {
-  AddAccountParams,
+  AddAccountRequestModel,
   AuthenticationParams,
   AddAccount,
   Authentication,
   LoadAccountByToken,
+  AddAccountResponseModel,
 } from "../../../src/domain/usecases";
 
 export const mockAccountModel = (): AccountModel => ({
@@ -19,7 +20,7 @@ export const mockAuthenticationModel = (): AuthenticationModel => ({
   name: "any_name",
 });
 
-export const mockAddAccountParams = (): AddAccountParams => ({
+export const mockAddAccountParams = (): AddAccountRequestModel => ({
   name: "any_name",
   email: "any_email@mail.com",
   password: "any_password",
@@ -33,9 +34,8 @@ export const mockAuthenticationParams = (): AuthenticationParams => ({
 export const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async add(account: AddAccountParams): Promise<AccountModel> {
-      const fakeAccount = mockAccountModel();
-      return Promise.resolve(fakeAccount);
+    async add(): Promise<AddAccountResponseModel> {
+      return true;
     }
   }
 
