@@ -1,13 +1,17 @@
 import { LoadSurveys } from "../../domain/usecases/load-surveys";
 import { noContent, ok, serverError } from "../helpers/http-helper";
-import { Controller, HttpRequest, HttpResponse } from "../protocols";
+import { Controller, HttpResponse } from "../protocols";
+
+export interface LoadSurveysRequest {
+  accountId: string;
+}
 
 export class LoadSurveysController implements Controller {
   constructor(private readonly loadSurveys: LoadSurveys) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: LoadSurveysRequest): Promise<HttpResponse> {
     try {
-      const { accountId } = httpRequest;
+      const { accountId } = request;
       const surveys = await this.loadSurveys.load(accountId);
       if (surveys.length === 0) {
         return noContent();

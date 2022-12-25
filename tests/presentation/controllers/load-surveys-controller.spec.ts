@@ -1,12 +1,14 @@
 import MockDate from "mockdate";
 import { LoadSurveys } from "../../../src/domain/usecases";
-import { LoadSurveysController } from "../../../src/presentation/controllers/load-surveys-controller";
+import {
+  LoadSurveysController,
+  LoadSurveysRequest,
+} from "../../../src/presentation/controllers/load-surveys-controller";
 import {
   ok,
   noContent,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
-import { HttpRequest } from "../../../src/presentation/protocols";
 import { mockLoadSurveys, mockSurveyModelList } from "../../domain/mocks";
 
 interface SutTypes {
@@ -21,7 +23,7 @@ const makeSut = (): SutTypes => {
   return { sut, loadSurveysStub };
 };
 
-const mockRequest = (): HttpRequest => ({
+const mockRequest = (): LoadSurveysRequest => ({
   accountId: "any_account_id",
 });
 
