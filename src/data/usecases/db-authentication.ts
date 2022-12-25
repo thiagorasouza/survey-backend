@@ -1,5 +1,8 @@
-import { AuthenticationModel } from "../../domain/models";
-import { Authentication, AuthenticationParams } from "../../domain/usecases";
+import {
+  Authentication,
+  AuthenticationRequestModel,
+  AuthenticationResponseModel,
+} from "../../domain/usecases";
 import {
   Encrypter,
   HashComparer,
@@ -16,17 +19,17 @@ export class DbAuthentication implements Authentication {
   ) {}
 
   async auth(
-    authentication: AuthenticationParams
-  ): Promise<AuthenticationModel> {
+    authData: AuthenticationRequestModel
+  ): Promise<AuthenticationResponseModel> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(
-      authentication.email
+      authData.email
     );
     if (!account) {
       return null;
     }
 
     const isValid = await this.hashComparer.compare(
-      authentication.password,
+      authData.password,
       account.password
     );
     if (!isValid) {

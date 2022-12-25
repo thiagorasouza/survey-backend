@@ -1,10 +1,14 @@
 import { AuthenticationModel } from "../models/authentication";
 
-export interface AuthenticationParams {
+export interface AuthenticationRequestModel {
   email: string;
   password: string;
 }
 
+export type AuthenticationResponseModel = AuthenticationModel;
+
 export interface Authentication {
-  auth(authentication: AuthenticationParams): Promise<AuthenticationModel>;
+  auth(
+    authentication: AuthenticationRequestModel
+  ): Promise<AuthenticationResponseModel>;
 }

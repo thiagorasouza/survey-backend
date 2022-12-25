@@ -8,7 +8,7 @@ import {
 import env from "../../../../src/main/config/env";
 import {
   mockAddSurveyParams,
-  mockAddAccountParams,
+  mockAddAccountRequestModel,
 } from "../../../domain/mocks";
 
 const makeSut = (): SurveyResultMongoRepository => {
@@ -29,7 +29,7 @@ describe("Survey Mongo Repository", () => {
   };
 
   const makeAccount = async (): Promise<AccountModel> => {
-    const surveyData = mockAddAccountParams();
+    const surveyData = mockAddAccountRequestModel();
     const response = await accounts.insertOne(surveyData);
     const { insertedId } = response;
     const account = await accounts.findOne({ _id: insertedId });

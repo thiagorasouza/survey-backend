@@ -1,11 +1,12 @@
 import { AccountModel, AuthenticationModel } from "../../../src/domain/models";
 import {
   AddAccountRequestModel,
-  AuthenticationParams,
+  AuthenticationRequestModel,
   AddAccount,
   Authentication,
   LoadAccountByToken,
   AddAccountResponseModel,
+  AuthenticationResponseModel,
 } from "../../../src/domain/usecases";
 
 export const mockAccountModel = (): AccountModel => ({
@@ -20,16 +21,17 @@ export const mockAuthenticationModel = (): AuthenticationModel => ({
   name: "any_name",
 });
 
-export const mockAddAccountParams = (): AddAccountRequestModel => ({
+export const mockAddAccountRequestModel = (): AddAccountRequestModel => ({
   name: "any_name",
   email: "any_email@mail.com",
   password: "any_password",
 });
 
-export const mockAuthenticationParams = (): AuthenticationParams => ({
-  email: "any_email@mail.com",
-  password: "any_password",
-});
+export const mockAuthenticationRequestModel =
+  (): AuthenticationRequestModel => ({
+    email: "any_email@mail.com",
+    password: "any_password",
+  });
 
 export const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -44,7 +46,7 @@ export const mockAddAccount = (): AddAccount => {
 
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(): Promise<AuthenticationModel> {
+    async auth(): Promise<AuthenticationResponseModel> {
       return mockAuthenticationModel();
     }
   }

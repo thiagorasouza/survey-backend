@@ -4,7 +4,7 @@ import {
   MongoHelper,
 } from "../../../../src/infra/db/mongodb";
 import env from "../../../../src/main/config/env";
-import { mockAddAccountParams } from "../../../domain/mocks";
+import { mockAddAccountRequestModel } from "../../../domain/mocks";
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository();
@@ -28,7 +28,7 @@ describe("Account Mongo Repository", () => {
   describe("AddAccountRepository", () => {
     it("should return an account on add success", async () => {
       const sut = makeSut();
-      const account = await sut.add(mockAddAccountParams());
+      const account = await sut.add(mockAddAccountRequestModel());
       expect(account).toBeTruthy();
       expect(account.id).toBeTruthy();
       expect(account.name).toBe("any_name");
@@ -40,7 +40,7 @@ describe("Account Mongo Repository", () => {
   describe("LoadAccountByEmailRepository", () => {
     it("should return an account on loadByEmail success", async () => {
       const sut = makeSut();
-      await accounts.insertOne(mockAddAccountParams());
+      await accounts.insertOne(mockAddAccountRequestModel());
       const account = await sut.loadByEmail("any_email@mail.com");
       expect(account).toBeTruthy();
       expect(account.id).toBeTruthy();
@@ -116,7 +116,7 @@ describe("Account Mongo Repository", () => {
       const sut = makeSut();
 
       await accounts.insertOne({
-        ...mockAddAccountParams(),
+        ...mockAddAccountRequestModel(),
         accessToken: "any_token",
       });
 
@@ -128,7 +128,7 @@ describe("Account Mongo Repository", () => {
       const sut = makeSut();
 
       await accounts.insertOne({
-        ...mockAddAccountParams(),
+        ...mockAddAccountRequestModel(),
         accessToken: "any_token",
         role: "admin",
       });
