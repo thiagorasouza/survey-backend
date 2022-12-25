@@ -1,9 +1,10 @@
 import { SurveyModel } from "../../../src/domain/models";
 import {
-  AddSurveyParams,
+  AddSurveyRequestModel,
   AddSurvey,
   LoadSurveyById,
   LoadSurveys,
+  AddSurveyResponseModel,
 } from "../../../src/domain/usecases";
 
 export const mockSurveyModel = (): SurveyModel => ({
@@ -20,7 +21,7 @@ export const mockSurveyModel = (): SurveyModel => ({
   date: new Date(),
 });
 
-export const mockAddSurveyParams = (): AddSurveyParams => ({
+export const mockAddSurveyParams = (): AddSurveyRequestModel => ({
   question: "any_question",
   answers: [
     {
@@ -34,7 +35,7 @@ export const mockAddSurveyParams = (): AddSurveyParams => ({
 
 export const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add(): Promise<void> {
+    async add(): Promise<AddSurveyResponseModel> {
       return;
     }
   }
