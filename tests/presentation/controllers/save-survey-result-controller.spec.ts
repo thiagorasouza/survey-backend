@@ -14,7 +14,10 @@ import {
   forbidden,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
-import { mockLoadSurveyByIdRequestModel } from "../../data/mocks";
+import {
+  mockLoadSurveyByIdRequestModel,
+  mockLoadSurveyResultRequestModel,
+} from "../../data/mocks";
 import {
   mockLoadSurveyById,
   mockSaveSurveyResult,
@@ -124,7 +127,7 @@ describe("SaveSurveyResultController", () => {
     await sut.handle(request);
 
     expect(loadSpy).toHaveBeenCalledTimes(1);
-    expect(loadSpy).toHaveBeenCalledWith(request.surveyId, request.accountId);
+    expect(loadSpy).toHaveBeenCalledWith(mockLoadSurveyResultRequestModel());
   });
 
   it("should return 500 if LoadSurveyById throws", async () => {

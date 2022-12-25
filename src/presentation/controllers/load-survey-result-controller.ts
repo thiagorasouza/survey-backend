@@ -17,17 +17,17 @@ export class LoadSurveyResultController implements Controller {
 
   async handle(request: LoadSurveyResultRequest): Promise<HttpResponse> {
     try {
-      const accountId = request.accountId;
-      const surveyId = request.surveyId;
+      const { accountId, surveyId } = request;
+
       const survey = await this.loadSurveyById.loadById({ id: surveyId });
       if (!survey) {
         return forbidden(new InvalidParamError("surveyId"));
       }
 
-      const surveyCompiled = await this.loadSurveyResult.load(
+      const surveyCompiled = await this.loadSurveyResult.load({
         surveyId,
-        accountId
-      );
+        accountId,
+      });
 
       return ok(surveyCompiled);
     } catch (error) {

@@ -39,10 +39,10 @@ export class SaveSurveyResultController implements Controller {
         date: new Date(),
       });
 
-      const surveyCompiled = await this.loadSurveyResult.load(
+      const surveyCompiled = await this.loadSurveyResult.load({
         surveyId,
-        accountId
-      );
+        accountId,
+      });
 
       return ok(surveyCompiled);
     } catch (error) {
