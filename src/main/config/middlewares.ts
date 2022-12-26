@@ -1,8 +1,16 @@
 import { Express } from "express";
-import { bodyParser, contentType, cors } from "../middlewares";
+import { Server } from "http";
+import {
+  bodyParser,
+  contentType,
+  cors,
+  getApolloMiddleware,
+} from "../middlewares";
 
-export default (app: Express): void => {
+export default async (app: Express, server: Server): Promise<void> => {
+  const apolloMiddleware = await getApolloMiddleware(server);
   app.use(bodyParser);
   app.use(cors);
+  app.use(apolloMiddleware);
   app.use(contentType);
 };

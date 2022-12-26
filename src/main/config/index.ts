@@ -1,5 +1,4 @@
-export * from "./app";
-export * from "./config-swagger";
+export * from "./swagger";
 export * from "./env";
 export * from "./middlewares";
 export * from "./routes";
