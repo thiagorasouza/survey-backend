@@ -20,7 +20,9 @@ async function startServer() {
 
   await MongoHelper.connect(env.mongoUrl);
 
-  server.listen(env.port, () => console.log(`Sever running on ${env.port}`));
+  server.listen(env.port, () =>
+    console.log(`Sever running on http://localhost:${env.port}`)
+  );
 }
 
 startServer();
