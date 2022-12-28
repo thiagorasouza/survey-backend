@@ -5,10 +5,32 @@ import { Express } from "express";
 import * as bcrypt from "bcrypt";
 import env from "../../../src/main/config/env";
 import { setupServer } from "../../../src/main/config/server";
+import { AddAccountRequestModel } from "../../../src/domain/usecases";
 
 describe("Login Query", () => {
   let app: Express;
   let accounts: Collection;
+
+  const makeLoginQuery = (email: string, password: string) => ({
+    query: `#graphql
+            query ($email: String!, $password: String!) {
+              login (email: $email, password: $password) {
+                accessToken
+                name
+              }
+            }
+          `,
+    variables: { email, password },
+  });
+
+  const makeAccount = async (
+    account: AddAccountRequestModel
+  ): Promise<void> => {
+    await accounts.insertOne({
+      ...account,
+      password: await bcrypt.hash(account.password, 12),
+    });
+  };
 
   beforeEach(async () => {
     accounts = await MongoHelper.getCollection("accounts");
@@ -26,35 +48,31 @@ describe("Login Query", () => {
 
   describe("login() query", () => {
     it("should return access token and name for valid credentials", async () => {
-      const fakeAccount = {
+      const fakeData = {
         name: "valid_name",
         email: "valid_email@email.com",
         password: "valid_password",
       };
 
-      await accounts.insertOne({
-        ...fakeAccount,
-        password: await bcrypt.hash(fakeAccount.password, 12),
-      });
+      await makeAccount(fakeData);
+      const query = makeLoginQuery(fakeData.email, fakeData.password);
 
-      const query = {
-        query: `#graphql
-          query ($email: String!, $password: String!) {
-            login (email: $email, password: $password) {
-              accessToken
-              name
-            }
-          }
-        `,
-        variables: {
-          email: fakeAccount.email,
-          password: fakeAccount.password,
-        },
-      };
+      const result = await request(app).post("/graphql").send(query);
 
-      const result: any = await request(app).post("/graphql").send(query);
       expect(result.body?.data?.login?.accessToken).toBeTruthy();
-      expect(result.body?.data?.login?.name).toBe(fakeAccount.name);
+      expect(result.body?.data?.login?.name).toBe(fakeData.name);
+    });
+
+    it("should return UNAUTHORIZED for invalid credentials", async () => {
+      const query = makeLoginQuery(
+        "invalid_email@email.com",
+        "invalid_password"
+      );
+
+      const result = await request(app).post("/graphql").send(query);
+
+      expect(result.body?.data).toBeFalsy();
+      expect(result.body?.errors[0].extensions.code).toBe("UNAUTHORIZED");
     });
   });
 });
