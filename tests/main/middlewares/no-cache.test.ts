@@ -1,8 +1,14 @@
 import request from "supertest";
-import app from "../../../src/main/config/app";
+import { setupServer } from "../../../src/main/config/server";
 import { noCache } from "../../../src/main/middlewares/no-cache";
 
 describe("NoCache Middleware", () => {
+  let app;
+
+  beforeAll(async () => {
+    ({ app } = await setupServer());
+  });
+
   it("should disable caching", async () => {
     app.get("/test_no_cache", noCache, (req, res) => {
       res.send();

@@ -1,11 +1,12 @@
 import request from "supertest";
-import app from "../../../src/main/config/app";
+import { setupServer } from "../../../src/main/config/server";
 import env from "../../../src/main/config/env";
 import { sign } from "jsonwebtoken";
 import { Collection } from "mongodb";
 import { MongoHelper } from "../../../src/infra/db/mongodb/mongo-helper";
 
 describe("Survey Routes", () => {
+  let app;
   let surveys: Collection;
   let accounts: Collection;
 
@@ -42,6 +43,7 @@ describe("Survey Routes", () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrl);
+    ({ app } = await setupServer());
   });
 
   afterAll(async () => {

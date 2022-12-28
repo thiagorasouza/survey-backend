@@ -11,6 +11,6 @@ export default async (app: Express, server: Server): Promise<void> => {
   const apolloMiddleware = await getApolloMiddleware(server);
   app.use(bodyParser);
   app.use(cors);
-  app.use(apolloMiddleware);
+  app.use("/graphql", apolloMiddleware);
   app.use(contentType);
 };

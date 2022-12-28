@@ -1,11 +1,12 @@
 import request from "supertest";
 import { Collection } from "mongodb";
 import { MongoHelper } from "../../../src/infra/db/mongodb/mongo-helper";
-import app from "../../../src/main/config/app";
+import { setupServer } from "../../../src/main/config/server";
 import env from "../../../src/main/config/env";
 import * as bcrypt from "bcrypt";
 
 describe("Login Routes", () => {
+  let app;
   let accounts: Collection;
 
   beforeEach(async () => {
@@ -15,6 +16,7 @@ describe("Login Routes", () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrl);
+    ({ app } = await setupServer());
   });
 
   afterAll(async () => {
