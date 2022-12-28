@@ -5,6 +5,8 @@ import { Server } from "node:http";
 import { typeDefs } from "../graphql/type-defs";
 import { resolvers } from "../graphql/resolvers";
 import { RequestHandler } from "express";
+import { makeAuthMiddleware } from "../factories/middlewares";
+import { adaptAuthMiddleware } from "../adapters/apollo-middleware-adapter";
 
 export const getApolloMiddleware = async (
   httpServer: Server
@@ -16,5 +18,8 @@ export const getApolloMiddleware = async (
   });
 
   await apolloServer.start();
-  return expressMiddleware(apolloServer);
+
+  return expressMiddleware(apolloServer, {
+    context: adaptAuthMiddleware(makeAuthMiddleware()),
+  });
 };
