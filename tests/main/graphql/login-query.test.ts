@@ -105,16 +105,17 @@ describe("Login and SignUp APIs", () => {
       expect(result.body?.data?.signup?.name).toBe(fakeData.name);
     });
 
-    // it("should return UNAUTHORIZED for invalid credentials", async () => {
-    //   const fakeData = mockAccount();
+    it("should return UNAUTHORIZED for invalid credentials", async () => {
+      const fakeData = mockAccount();
 
-    //   const query = makeSignupQuery(fakeData);
+      await makeAccount(fakeData);
+      const query = makeSignupQuery(fakeData);
 
-    //   const result = await request(app).post("/graphql").send(query);
-    //   console.log("🚀 ~ result", result.body)
+      const result = await request(app).post("/graphql").send(query);
 
-    //   expect(result.body?.data).toBeFalsy();
-    //   expect(result.body?.errors[0].extensions.code).toBe("UNAUTHORIZED");
-    // });
+      expect(result.body?.data).toBeFalsy();
+      expect(result.body?.errors[0].message).toBe("Email already in use");
+      expect(result.body?.errors[0].extensions.code).toBe("FORBIDDEN");
+    });
   });
 });
