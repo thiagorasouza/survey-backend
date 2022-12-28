@@ -8,7 +8,7 @@ import { setupServer } from "../../../src/main/config/server";
 import { LoginRequest } from "../../../src/presentation/controllers/login-controller";
 import { SignUpRequest } from "../../../src/presentation/controllers/signup-controller";
 
-describe("Login and SignUp APIs", () => {
+describe("Login and SignUp GraphQL APIs", () => {
   let app: Express;
   let accounts: Collection;
 
