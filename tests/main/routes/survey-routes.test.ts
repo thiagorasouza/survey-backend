@@ -1,38 +1,14 @@
 import request from "supertest";
 import { setupServer } from "../../../src/main/config/server";
 import env from "../../../src/main/config/env";
-import { sign } from "jsonwebtoken";
 import { Collection } from "mongodb";
 import { MongoHelper } from "../../../src/infra/db/mongodb/mongo-helper";
+import { makeAccessToken } from "../mocks/access-token";
 
 describe("Survey Routes", () => {
   let app;
   let surveys: Collection;
   let accounts: Collection;
-
-  const makeAccessToken = async (): Promise<string> => {
-    const response = await accounts.insertOne({
-      name: "valid_name",
-      email: "valid_email@email.com",
-      password: "valid_password",
-      role: "admin",
-    });
-    const { insertedId } = response;
-    const id = insertedId.toString();
-
-    const accessToken = sign(id, env.jwtSecret);
-
-    await accounts.updateOne(
-      { _id: insertedId },
-      {
-        $set: {
-          accessToken,
-        },
-      }
-    );
-
-    return accessToken;
-  };
 
   beforeEach(async () => {
     surveys = await MongoHelper.getCollection("surveys");
@@ -68,7 +44,7 @@ describe("Survey Routes", () => {
     });
 
     it("should return 204 on add survey with valid token", async () => {
-      const accessToken = await makeAccessToken();
+      const accessToken = await makeAccessToken("admin");
 
       await request(app)
         .post("/api/surveys")
@@ -92,8 +68,8 @@ describe("Survey Routes", () => {
       await request(app).get("/api/surveys").send().expect(403);
     });
 
-    it("should return 200 on load surveys with valid token", async () => {
-      const accessToken = await makeAccessToken();
+    it("should return 204 on load surveys with valid token", async () => {
+      const accessToken = await makeAccessToken("admin");
 
       await request(app)
         .get("/api/surveys")

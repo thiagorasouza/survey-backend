@@ -1,37 +1,15 @@
 import request from "supertest";
 import { Collection } from "mongodb";
-import { sign } from "jsonwebtoken";
 import { MongoHelper } from "../../../src/infra/db/mongodb/mongo-helper";
 import env from "../../../src/main/config/env";
 import { setupServer } from "../../../src/main/config/server";
+import { makeAccessToken } from "../mocks/access-token";
+import { makeSurvey } from "../mocks/survey";
 
 describe("Survey Routes", () => {
   let app;
   let surveys: Collection;
   let accounts: Collection;
-
-  const makeAccessToken = async (): Promise<string> => {
-    const response = await accounts.insertOne({
-      name: "valid_name",
-      email: "valid_email@email.com",
-      password: "valid_password",
-    });
-    const { insertedId } = response;
-    const id = insertedId.toString();
-
-    const accessToken = sign(id, env.jwtSecret);
-
-    await accounts.updateOne(
-      { _id: insertedId },
-      {
-        $set: {
-          accessToken,
-        },
-      }
-    );
-
-    return accessToken;
-  };
 
   beforeEach(async () => {
     surveys = await MongoHelper.getCollection("surveys");
@@ -60,19 +38,7 @@ describe("Survey Routes", () => {
     });
 
     it("should return 200 on save survey result with valid access token", async () => {
-      const result = await surveys.insertOne({
-        question: "Any Question",
-        answers: [
-          {
-            image: "http://image-name.com",
-            answer: "Answer 1",
-          },
-          { answer: "Answer 2" },
-        ],
-      });
-      const { insertedId } = result;
-      const surveyId = insertedId.toString();
-
+      const surveyId = await makeSurvey();
       const accessToken = await makeAccessToken();
 
       await request(app)
@@ -96,20 +62,7 @@ describe("Survey Routes", () => {
     });
 
     it("should return 200 on load survey result with valid access token", async () => {
-      const result = await surveys.insertOne({
-        question: "Any Question",
-        answers: [
-          {
-            image: "http://image-name.com",
-            answer: "Answer 1",
-          },
-          { answer: "Answer 2" },
-        ],
-        date: new Date(),
-      });
-      const { insertedId } = result;
-      const surveyId = insertedId.toString();
-
+      const surveyId = await makeSurvey();
       const accessToken = await makeAccessToken();
 
       await request(app)
