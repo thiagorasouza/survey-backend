@@ -8,25 +8,28 @@ import { makeAccessToken } from "../mocks/access-token";
 import { makeSurvey } from "../mocks/survey";
 import MockDate from "mockdate";
 
-describe("Survey GraphQL APIs", () => {
+describe("SurveyResult GraphQL APIs", () => {
   let app: Express;
   let accounts: Collection;
   let surveys: Collection;
 
-  const makeSurveysQuery = () => ({
+  const makeSurveyResultQuery = (surveyId: string) => ({
     query: `#graphql
-            query {
-              surveys {
-                id
-                question
+            query ($surveyId: String!) {
+              surveyResult(surveyId: $surveyId) {
+                surveyId
+                question                
                 answers {
                   image
                   answer
+                  count
+                  percent
+                  isCurrentAccountAnswer
                 }
                 date
-                didAnswer
               }
             }`,
+    variables: { surveyId },
   });
 
   beforeEach(async () => {
@@ -47,44 +50,38 @@ describe("Survey GraphQL APIs", () => {
     await MongoHelper.disconnect();
   });
 
-  describe("surveys() query", () => {
-    it("should return created surveys", async () => {
-      await makeSurvey();
+  describe("surveyResult() query", () => {
+    it("should return compiled survey result", async () => {
+      const surveyId = await makeSurvey();
       const accessToken = await makeAccessToken();
 
-      const query = makeSurveysQuery();
+      const query = makeSurveyResultQuery(surveyId);
       const result = await request(app)
         .post("/graphql")
         .set("X-Access-Token", accessToken)
         .send(query);
 
-      expect(result.body?.data?.surveys?.length).toBe(1);
-      expect(result.body?.data?.surveys[0]?.id).toBeTruthy();
-      expect(result.body?.data?.surveys[0]?.question).toBe("Any Question");
-      expect(result.body?.data?.surveys[0]?.answers).toEqual([
+      expect(result.body?.data?.surveyResult?.surveyId).toBe(surveyId);
+      expect(result.body?.data?.surveyResult?.question).toBe("Any Question");
+      expect(result.body?.data?.surveyResult?.answers).toEqual([
         {
           image: "http://image-name.com",
           answer: "Answer 1",
+          count: 0,
+          percent: 0,
+          isCurrentAccountAnswer: false,
         },
         {
           image: null,
           answer: "Answer 2",
+          count: 0,
+          percent: 0,
+          isCurrentAccountAnswer: false,
         },
       ]);
-      expect(result.body?.data?.surveys[0]?.date).toBe(
+      expect(result.body?.data?.surveyResult?.date).toBe(
         new Date().toISOString()
       );
-      expect(result.body?.data?.surveys[0]?.didAnswer).toBe(false);
-    });
-
-    it("should return FORBIDDEN if no access token is provided", async () => {
-      await makeSurvey();
-
-      const query = makeSurveysQuery();
-      const result = await request(app).post("/graphql").send(query);
-
-      expect(result.body?.data).toBeFalsy();
-      expect(result.body?.errors[0].extensions.code).toBe("FORBIDDEN");
     });
   });
 });
