@@ -149,5 +149,15 @@ describe("SurveyResult GraphQL APIs", () => {
         new Date().toISOString()
       );
     });
+
+    it("should return FORBIDDEN if no access token is provided", async () => {
+      const surveyId = await makeSurvey();
+
+      const query = makeSaveSurveyResultQuery(surveyId, "Answer 1");
+      const result = await request(app).post("/graphql").send(query);
+
+      expect(result.body?.data).toBeFalsy();
+      expect(result.body?.errors[0].extensions.code).toBe("FORBIDDEN");
+    });
   });
 });
