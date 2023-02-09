@@ -11,7 +11,7 @@ export class EmailValidation implements Validation {
   validate(input: unknown): Error {
     const isValid = this.emailValidator.isValid(input[this.fieldName]);
     if (!isValid) {
-      return new InvalidParamError(input[this.fieldName]);
+      return new InvalidParamError(this.fieldName);
     }
   }
 }
