@@ -13,6 +13,7 @@ import {
   ok,
   forbidden,
   serverError,
+  notFound,
 } from "../../../src/presentation/helpers/http-helper";
 import {
   mockLoadSurveyByIdRequestModel,
@@ -77,7 +78,7 @@ describe("SaveSurveyResultController", () => {
     expect(loadByIdSpy).toHaveBeenCalledWith(mockLoadSurveyByIdRequestModel());
   });
 
-  it("should return 403 if LoadSurveyById returns null", async () => {
+  it("should return 404 if LoadSurveyById returns null", async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
 
     jest
@@ -87,7 +88,7 @@ describe("SaveSurveyResultController", () => {
     const request = mockRequest();
     const httpResponse = await sut.handle(request);
 
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
+    expect(httpResponse).toEqual(notFound());
   });
 
   it("should return 403 if answer is not valid", async () => {

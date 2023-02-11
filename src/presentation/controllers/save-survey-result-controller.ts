@@ -2,7 +2,7 @@ import { LoadSurveyResult } from "../../domain/usecases/load-survey-result";
 import { SaveSurveyResult } from "../../domain/usecases/save-survey-result";
 import { LoadSurveyById } from "../../domain/usecases/load-survey-by-id";
 import { InvalidParamError } from "../errors";
-import { forbidden, ok, serverError } from "../helpers/http-helper";
+import { forbidden, notFound, ok, serverError } from "../helpers/http-helper";
 import { Controller, HttpResponse } from "../protocols";
 
 export interface SaveSurveyResultRequest {
@@ -24,7 +24,7 @@ export class SaveSurveyResultController implements Controller {
 
       const survey = await this.loadSurveyById.loadById({ id: surveyId });
       if (!survey) {
-        return forbidden(new InvalidParamError("surveyId"));
+        return notFound();
       }
 
       const surveyAnswers = survey.answers.map((item) => item.answer);
