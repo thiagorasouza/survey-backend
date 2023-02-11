@@ -50,6 +50,16 @@ export const surveyResultPath = {
           },
         },
       },
+      404: {
+        description: "Survey not found",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
+      },
       500: {
         $ref: "#/components/serverError",
       },
@@ -89,6 +99,16 @@ export const surveyResultPath = {
       },
       403: {
         description: "Invalid surveyId",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
+      },
+      404: {
+        description: "Survey not found",
         content: {
           "application/json": {
             schema: {
