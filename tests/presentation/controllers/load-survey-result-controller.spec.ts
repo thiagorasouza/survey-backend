@@ -4,11 +4,10 @@ import {
   LoadSurveyResultController,
   LoadSurveyResultRequest,
 } from "../../../src/presentation/controllers/load-survey-result-controller";
-import { InvalidParamError } from "../../../src/presentation/errors";
 import {
   ok,
-  forbidden,
   serverError,
+  notFound,
 } from "../../../src/presentation/helpers/http-helper";
 import {
   mockLoadSurveyByIdRequestModel,
@@ -67,7 +66,7 @@ describe("LoadSurveyResultController", () => {
     expect(loadByIdSpy).toHaveBeenCalledWith(mockLoadSurveyByIdRequestModel());
   });
 
-  it("should return 403 if LoadSurveyById returns null", async () => {
+  it("should return 404 if LoadSurveyById returns null", async () => {
     const { sut, loadSurveyByIdStub } = makeSut();
 
     jest
@@ -77,7 +76,7 @@ describe("LoadSurveyResultController", () => {
     const request = mockRequest();
     const httpResponse = await sut.handle(request);
 
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError("surveyId")));
+    expect(httpResponse).toEqual(notFound());
   });
 
   it("should call LoadSurveyResult with correct values", async () => {
