@@ -37,6 +37,9 @@ export const surveyResultPath = {
           },
         },
       },
+      401: {
+        $ref: "#/components/unauthorized",
+      },
       403: {
         description: "Invalid surveyId or answer",
         content: {
@@ -80,6 +83,9 @@ export const surveyResultPath = {
             },
           },
         },
+      },
+      401: {
+        $ref: "#/components/unauthorized",
       },
       403: {
         description: "Invalid surveyId",

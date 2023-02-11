@@ -21,8 +21,8 @@ export const surveysPath = {
       204: {
         description: "No surveys found",
       },
-      403: {
-        $ref: "#/components/forbidden",
+      401: {
+        $ref: "#/components/unauthorized",
       },
       500: {
         $ref: "#/components/serverError",
@@ -60,8 +60,18 @@ export const surveysPath = {
           },
         },
       },
+      401: {
+        $ref: "#/components/unauthorized",
+      },
       403: {
-        $ref: "#/components/forbidden",
+        description: "Forbidden: only admins can create surveys",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       500: {
         $ref: "#/components/serverError",
