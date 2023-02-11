@@ -6,7 +6,7 @@ export const surveyResultPath = {
       },
     ],
     tags: ["Surveys"],
-    summary: "API to create a survey answer",
+    summary: "API to save a survey answer",
     requestBody: {
       content: {
         "application/json": {
@@ -28,7 +28,7 @@ export const surveyResultPath = {
     ],
     responses: {
       200: {
-        description: "Success",
+        description: "Survey answer saved",
         content: {
           "application/json": {
             schema: {
@@ -38,10 +38,14 @@ export const surveyResultPath = {
         },
       },
       403: {
-        $ref: "#/components/forbidden",
-      },
-      404: {
-        $ref: "#/components/notFound",
+        description: "Invalid surveyId or answer",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       500: {
         $ref: "#/components/serverError",
@@ -78,10 +82,14 @@ export const surveyResultPath = {
         },
       },
       403: {
-        $ref: "#/components/forbidden",
-      },
-      404: {
-        $ref: "#/components/notFound",
+        description: "Invalid surveyId",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       500: {
         $ref: "#/components/serverError",

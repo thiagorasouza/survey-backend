@@ -1,6 +1,6 @@
 export const loginPath = {
   post: {
-    tags: ["Login"],
+    tags: ["Accounts"],
     summary: "API to authenticate user",
     requestBody: {
       content: {
@@ -13,7 +13,7 @@ export const loginPath = {
     },
     responses: {
       200: {
-        description: "Success",
+        description: "Authenticated successfully",
         content: {
           "application/json": {
             schema: {
@@ -23,13 +23,24 @@ export const loginPath = {
         },
       },
       400: {
-        $ref: "#/components/badRequest",
+        description: "Invalid or missing parameters",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       401: {
-        $ref: "#/components/unauthorized",
-      },
-      404: {
-        $ref: "#/components/notFound",
+        description: "Username or password incorrect",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       500: {
         $ref: "#/components/serverError",

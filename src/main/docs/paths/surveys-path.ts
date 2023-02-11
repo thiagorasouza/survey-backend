@@ -18,11 +18,11 @@ export const surveysPath = {
           },
         },
       },
+      204: {
+        description: "No surveys found",
+      },
       403: {
         $ref: "#/components/forbidden",
-      },
-      404: {
-        $ref: "#/components/notFound",
       },
       500: {
         $ref: "#/components/serverError",
@@ -50,11 +50,18 @@ export const surveysPath = {
       204: {
         description: "Success",
       },
+      400: {
+        description: "Invalid or missing parameters",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
+      },
       403: {
         $ref: "#/components/forbidden",
-      },
-      404: {
-        $ref: "#/components/notFound",
       },
       500: {
         $ref: "#/components/serverError",

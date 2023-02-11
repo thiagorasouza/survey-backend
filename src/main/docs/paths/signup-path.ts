@@ -1,6 +1,6 @@
 export const signupPath = {
   post: {
-    tags: ["Login"],
+    tags: ["Accounts"],
     summary: "API to create user account",
     requestBody: {
       content: {
@@ -13,7 +13,7 @@ export const signupPath = {
     },
     responses: {
       200: {
-        description: "Success",
+        description: "Account created",
         content: {
           "application/json": {
             schema: {
@@ -23,13 +23,24 @@ export const signupPath = {
         },
       },
       400: {
-        $ref: "#/components/badRequest",
+        description: "Invalid or missing parameters",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       403: {
-        $ref: "#/components/forbidden",
-      },
-      404: {
-        $ref: "#/components/notFound",
+        description: "Email already in use",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/schemas/error",
+            },
+          },
+        },
       },
       500: {
         $ref: "#/components/serverError",
