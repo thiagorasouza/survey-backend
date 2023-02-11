@@ -28,13 +28,13 @@ describe("Survey Routes", () => {
   });
 
   describe("PUT /surveys/:surveyId/results", () => {
-    it("should return 403 on save survey result with invalid access token", async () => {
+    it("should return 401 on save survey result with invalid access token", async () => {
       await request(app)
         .put("/api/surveys/any_id/results")
         .send({
           answer: "any_answer",
         })
-        .expect(403);
+        .expect(401);
     });
 
     it("should return 200 on save survey result with valid access token", async () => {
@@ -52,13 +52,13 @@ describe("Survey Routes", () => {
   });
 
   describe("GET /surveys/:surveyId/results", () => {
-    it("should return 403 on load survey result with invalid access token", async () => {
+    it("should return 401 on load survey result with invalid access token", async () => {
       await request(app)
         .get("/api/surveys/any_id/results")
         .send({
           answer: "any_answer",
         })
-        .expect(403);
+        .expect(401);
     });
 
     it("should return 200 on load survey result with valid access token", async () => {

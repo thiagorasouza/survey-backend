@@ -4,6 +4,7 @@ import {
   ok,
   forbidden,
   serverError,
+  unauthorized,
 } from "../../../src/presentation/helpers/http-helper";
 import {
   AuthMiddleware,
@@ -28,10 +29,10 @@ const mockRequest = (): AuthRequest => ({
 });
 
 describe("Auth Middleware", () => {
-  it("should return 403 if no accessToken is passed", async () => {
+  it("should return 401 if no accessToken is passed", async () => {
     const { sut } = makeSut();
     const httpResponse = await sut.handle({});
-    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
+    expect(httpResponse).toEqual(unauthorized());
   });
 
   it("should call LoadAccountByToken with correct values", async () => {
@@ -47,7 +48,7 @@ describe("Auth Middleware", () => {
     expect(loadSpy).toHaveBeenCalledWith(requestModel);
   });
 
-  it("should return 403 if LoadAccountByToken returns null", async () => {
+  it("should return 401 if LoadAccountByToken returns null", async () => {
     const { sut, loadAccountByTokenStub } = makeSut();
     jest
       .spyOn(loadAccountByTokenStub, "load")
@@ -56,7 +57,7 @@ describe("Auth Middleware", () => {
     const request = mockRequest();
     const httpResponse = await sut.handle(request);
 
-    expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
+    expect(httpResponse).toEqual(unauthorized());
   });
 
   it("should return 500 if LoadAccountByToken throws", async () => {

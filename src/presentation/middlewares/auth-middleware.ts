@@ -3,7 +3,12 @@ import {
   LoadAccountByTokenRequestModel,
 } from "../../domain/usecases";
 import { AccessDeniedError } from "../errors";
-import { forbidden, ok, serverError } from "../helpers/http-helper";
+import {
+  forbidden,
+  ok,
+  serverError,
+  unauthorized,
+} from "../helpers/http-helper";
 import { HttpResponse, Middleware } from "../protocols";
 
 export interface AuthRequest {
@@ -20,7 +25,7 @@ export class AuthMiddleware implements Middleware {
     try {
       const { accessToken } = request;
       if (!accessToken) {
-        return forbidden(new AccessDeniedError());
+        return unauthorized();
       }
 
       const requestModel: LoadAccountByTokenRequestModel = {
@@ -31,7 +36,7 @@ export class AuthMiddleware implements Middleware {
       const account = await this.loadAccountByToken.load(requestModel);
 
       if (!account) {
-        return forbidden(new AccessDeniedError());
+        return unauthorized();
       }
 
       return ok({ accountId: account.id });
