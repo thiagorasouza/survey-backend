@@ -1,8 +1,6 @@
 import { LoadAccountByToken } from "../../../src/domain/usecases";
-import { AccessDeniedError } from "../../../src/presentation/errors";
 import {
   ok,
-  forbidden,
   serverError,
   unauthorized,
 } from "../../../src/presentation/helpers/http-helper";

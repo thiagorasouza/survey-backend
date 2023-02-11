@@ -2,13 +2,7 @@ import {
   LoadAccountByToken,
   LoadAccountByTokenRequestModel,
 } from "../../domain/usecases";
-import { AccessDeniedError } from "../errors";
-import {
-  forbidden,
-  ok,
-  serverError,
-  unauthorized,
-} from "../helpers/http-helper";
+import { ok, serverError, unauthorized } from "../helpers/http-helper";
 import { HttpResponse, Middleware } from "../protocols";
 
 export interface AuthRequest {
