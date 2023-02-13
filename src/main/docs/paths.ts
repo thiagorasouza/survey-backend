@@ -7,5 +7,5 @@ export const paths = {
   "/login": loginPath,
   "/surveys": surveysPath,
   "/signup": signupPath,
-  "/surveys/{surveyId}/result": surveyResultPath,
+  "/surveys/{surveyId}/results": surveyResultPath,
 };

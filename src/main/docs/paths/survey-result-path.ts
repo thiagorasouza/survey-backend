@@ -41,7 +41,7 @@ export const surveyResultPath = {
         $ref: "#/components/unauthorized",
       },
       403: {
-        description: "Invalid surveyId or answer",
+        description: "Invalid answer",
         content: {
           "application/json": {
             schema: {
@@ -96,16 +96,6 @@ export const surveyResultPath = {
       },
       401: {
         $ref: "#/components/unauthorized",
-      },
-      403: {
-        description: "Invalid surveyId",
-        content: {
-          "application/json": {
-            schema: {
-              $ref: "#/schemas/error",
-            },
-          },
-        },
       },
       404: {
         description: "Survey not found",

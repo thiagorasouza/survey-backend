@@ -11,6 +11,7 @@ export default `#graphql
     surveyId: String!
     question: String!
     answers: [SurveyCompiledAnswer]!
+    didAnswer: Boolean!
     date: DateTime!
   }
 

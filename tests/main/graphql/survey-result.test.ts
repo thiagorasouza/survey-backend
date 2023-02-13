@@ -27,6 +27,7 @@ describe("SurveyResult GraphQL APIs", () => {
                   isCurrentAccountAnswer
                 }
                 date
+                didAnswer
               }
             }`,
     variables: { surveyId },
@@ -46,6 +47,7 @@ describe("SurveyResult GraphQL APIs", () => {
                   isCurrentAccountAnswer
                 }
                 date
+                didAnswer
               }
             }`,
     variables: { surveyId, answer },

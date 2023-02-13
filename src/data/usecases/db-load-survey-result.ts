@@ -50,6 +50,7 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
       question: survey.question,
       answers,
       date: survey.date,
+      didAnswer: !!accountAnswer,
     };
   }
 }

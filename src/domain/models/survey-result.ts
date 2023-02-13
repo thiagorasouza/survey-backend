@@ -17,4 +17,5 @@ export interface SurveyCompiledModel {
     isCurrentAccountAnswer: boolean;
   }[];
   date: Date;
+  didAnswer: boolean;
 }

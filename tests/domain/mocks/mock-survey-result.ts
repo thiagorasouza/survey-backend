@@ -59,6 +59,7 @@ export const mockSurveyCompiledModel = (): SurveyCompiledModel => ({
     },
   ],
   date: new Date(),
+  didAnswer: true,
 });
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResultRequestModel => ({

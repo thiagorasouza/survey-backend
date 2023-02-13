@@ -37,7 +37,6 @@ export class LoginController implements Controller {
 
       return ok(authenticationModel);
     } catch (error) {
-      console.log(error);
       return serverError(error);
     }
   }

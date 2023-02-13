@@ -7,7 +7,7 @@ export default {
   info: {
     title: "Survey Backend API",
     description: "API for The Survey App's backend",
-    version: "2.0.0",
+    version: "3.0.0",
   },
   servers: [
     {
