@@ -20,4 +20,5 @@ export const surveySchema = {
       type: "boolean",
     },
   },
+  required: ["question", "answers", "date", "didAnswer"],
 };

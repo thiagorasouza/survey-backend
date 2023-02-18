@@ -16,6 +16,9 @@ export const surveyResultSchema = {
     date: {
       type: "string",
     },
+    didAnswer: {
+      type: "boolean",
+    },
   },
   required: ["surveyId", "question", "answers", "date"],
 };
