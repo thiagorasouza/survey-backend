@@ -24,11 +24,11 @@ describe("MaxLength Validations", () => {
     expect(result).toBeUndefined();
   });
 
-  // it("should return nothing if field is bigger than the minimum length", () => {
-  //   const sut = makeSut();
-  //   const result = sut.validate({
-  //     [fieldName]: "X".repeat(minLength + 1),
-  //   });
-  //   expect(result).toBeUndefined();
-  // });
+  it("should return nothing if field is smaller than the max length", () => {
+    const sut = makeSut();
+    const result = sut.validate({
+      [fieldName]: "X".repeat(maxLength - 1),
+    });
+    expect(result).toBeUndefined();
+  });
 });
