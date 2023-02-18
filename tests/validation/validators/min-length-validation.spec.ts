@@ -23,4 +23,12 @@ describe("CoompareFields Validations", () => {
     });
     expect(result).toBeUndefined();
   });
+
+  it("should return nothing if field is bigger to the minimum length", () => {
+    const sut = makeSut();
+    const result = sut.validate({
+      [fieldName]: "X".repeat(minLength + 1),
+    });
+    expect(result).toBeUndefined();
+  });
 });
