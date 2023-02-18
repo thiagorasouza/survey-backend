@@ -7,7 +7,7 @@ const minLength = 6;
 const makeSut = (): MinLengthValidation =>
   new MinLengthValidation(fieldName, minLength);
 
-describe("CoompareFields Validations", () => {
+describe("MinLength Validations", () => {
   it("should return InvalidParamError if field length is smaller than minimum length", () => {
     const sut = makeSut();
     const result = sut.validate({
@@ -24,7 +24,7 @@ describe("CoompareFields Validations", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should return nothing if field is bigger to the minimum length", () => {
+  it("should return nothing if field is bigger than the minimum length", () => {
     const sut = makeSut();
     const result = sut.validate({
       [fieldName]: "X".repeat(minLength + 1),
