@@ -15,4 +15,12 @@ describe("CoompareFields Validations", () => {
     });
     expect(result).toEqual(new InvalidParamError("field"));
   });
+
+  it("should return nothing if field is equal to the minimum length", () => {
+    const sut = makeSut();
+    const result = sut.validate({
+      [fieldName]: "X".repeat(minLength),
+    });
+    expect(result).toBeUndefined();
+  });
 });
