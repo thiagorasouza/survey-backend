@@ -9,9 +9,6 @@ export class PatternValidation implements Validation {
 
   validate(input: unknown): Error {
     const patternMatches = this.pattern.test(input[this.fieldName]);
-    // console.log("🚀 ~ this.pattern", this.pattern);
-    // console.log("🚀 ~ patternMatches", patternMatches);
-
     if (!patternMatches) {
       return new InvalidParamError(this.fieldName);
     }
