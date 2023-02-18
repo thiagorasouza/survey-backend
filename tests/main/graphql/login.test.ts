@@ -44,10 +44,10 @@ describe("Login and SignUp GraphQL APIs", () => {
   };
 
   const mockAccount = (): SignUpRequest => ({
-    name: "valid_name",
+    name: "valid name",
     email: "valid_email@email.com",
-    password: "valid_password",
-    passwordConfirmation: "valid_password",
+    password: "1valid_password",
+    passwordConfirmation: "1valid_password",
   });
 
   beforeEach(async () => {

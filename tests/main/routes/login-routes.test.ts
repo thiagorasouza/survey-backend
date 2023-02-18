@@ -28,10 +28,10 @@ describe("Login Routes", () => {
       await request(app)
         .post("/api/signup")
         .send({
-          name: "valid_name",
+          name: "valid name",
           email: "valid_email@email.com",
-          password: "valid_password",
-          passwordConfirmation: "valid_password",
+          password: "1valid_password",
+          passwordConfirmation: "1valid_password",
         })
         .expect(200);
     });
@@ -41,7 +41,7 @@ describe("Login Routes", () => {
     it("should return 200 on login", async () => {
       const password = await bcrypt.hash("valid_password", 12);
       await accounts.insertOne({
-        name: "valid_name",
+        name: "valid name",
         email: "valid_email@email.com",
         password,
       });

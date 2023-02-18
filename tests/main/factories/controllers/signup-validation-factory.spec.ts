@@ -7,6 +7,9 @@ import {
   EmailValidation,
   ValidationComposite,
 } from "../../../../src/validation/validators";
+import { MaxLengthValidation } from "../../../../src/validation/validators/max-length-validation";
+import { MinLengthValidation } from "../../../../src/validation/validators/min-length-validation";
+import { PatternValidation } from "../../../../src/validation/validators/pattern-validation";
 
 jest.mock("../../../../src/validation/validators/validation-composite");
 
@@ -27,6 +30,16 @@ describe("SignUpValidation Factory", () => {
     for (const field of ["name", "email", "password", "passwordConfirmation"]) {
       validations.push(new RequiredFieldValidation(field));
     }
+    validations.push(
+      new MinLengthValidation("name", 2),
+      new MaxLengthValidation("name", 64),
+      new PatternValidation("name", /^[A-zÀ-ú]{2,} ?[A-zÀ-ú ]*$/u)
+    );
+    validations.push(
+      new MinLengthValidation("password", 8),
+      new MaxLengthValidation("password", 64),
+      new PatternValidation("password", /^(?=.*[A-Za-z])(?=.*\d).*$/)
+    );
     validations.push(
       new CompareFieldsValidation("password", "passwordConfirmation")
     );
