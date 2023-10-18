@@ -34,8 +34,8 @@ A beautiful and responsive survey app, featuring a robust architecture with over
 
 Other links:
 
-- :book: API Docs: [https://the-survey-app-api.up.railway.app/api-docs](https://the-survey-app-api.up.railway.app/api-docs)
-- :gear: Backend: [https://the-survey-app-api.up.railway.app/](https://the-survey-app-api.up.railway.app/)
+- :book: API Docs: [https://the-survey-app-backend.cyclic.app/api-docs](https://the-survey-app-backend.cyclic.app/api-docs)
+- :gear: Backend: [https://the-survey-app-backend.cyclic.app/](https://the-survey-app-backend.cyclic.app/)
 
 ## :card_file_box: Repos
 
