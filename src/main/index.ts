@@ -2,7 +2,7 @@ import env from "./config/env";
 import { setupServer } from "./config/server";
 import { MongoHelper } from "../infra/db/mongodb/mongo-helper";
 
-async function startServer() {
+export async function startServer() {
   await MongoHelper.connect(env.mongoUrl);
 
   const { server } = await setupServer();
@@ -11,5 +11,3 @@ async function startServer() {
     console.log(`Sever running on http://localhost:${env.port}`)
   );
 }
-
-startServer();
