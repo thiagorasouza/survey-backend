@@ -6,7 +6,7 @@
 
 A beautiful and responsive survey app, featuring a robust architecture with over 370 commits of **TDD, SOLID, Clean Architectured** code, along with a documented **100% test coveraged API**.
 
-:fire: **Less features, more architecture**.
+:fire: **Robust architecture**.
 
 ## :gear: Backend Features
 
