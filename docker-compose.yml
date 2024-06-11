@@ -11,7 +11,6 @@ services:
       - "27017:27017"
   api:
     container_name: survey-backend
-    build: .
     image: node:16
     working_dir: /app
     restart: always
