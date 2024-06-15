@@ -34,8 +34,8 @@ A beautiful and responsive survey app, featuring a robust architecture with over
 
 Other links:
 
-- :book: API Docs: [https://survey-backend-w3vy.onrender.com/api-docs](https://survey-backend-w3vy.onrender.com/api-docs)
-- :gear: Backend: [https://survey-backend-w3vy.onrender.com/](https://survey-backend-w3vy.onrender.com/)
+- :book: API Docs: [https://structural-kerrin-thiago-908a451a.koyeb.app/api-docs](https://structural-kerrin-thiago-908a451a.koyeb.app/api-docs)
+- :gear: Backend: [https://structural-kerrin-thiago-908a451a.koyeb.app/](https://structural-kerrin-thiago-908a451a.koyeb.app/)
 
 ## :card_file_box: Repos
 
